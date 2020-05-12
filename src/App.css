@@ -1,49 +1,144 @@
+:root {
+  --main-button-fill-colour: #390099;
+  --main-button-border-colour: #210058;
+  --red-drawing-colour: #DF0400;
+  --blue-drawing-colour: #00B8DF;
+  --green-drawing-colour: #00DF2B;
+  --purple-drawing-colour: #4900DF;
+  --orange-drawing-colour: #DF6300;
+}
+
+input[type="text"]  {  
+  font-family: 'Roboto', sans-serif;
+  font-size: 1em;  
+  height: 1.2em;
+  text-align: center;
+  padding-top: 0.1em;
+  border-radius: 5px;
+}
+
+button, input[type="submit"] {
+  padding: 1em 1.5em;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-size: 0.8em;
+  border-radius: 10px;
+  width: 25%;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 0px;
+  margin-top: 0px !important;
+}
+
+button {
+  background-color: var(--main-button-fill-colour);
+  border-bottom: 5px solid var(--main-button-border-colour);
+  text-shadow: 0px -2px var(--main-button-border-colour);
+}
+
+input[type="submit"] {
+  background-color: rgb(6, 165, 6);
+  border-bottom: 5px solid green;
+  text-shadow: 0px -2px green;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
 
 .content {
-  background-color: #9E0059;
+  background: url("./images/Background.svg") no-repeat center center fixed;
+  background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
   font-family: 'Roboto', sans-serif;
-}
-
-.header-text {
   text-align: center;
+  height: 100vh;
 }
 
-#home-page-header {
-  font-size: 3em;
-  margin-bottom: 0.3em;
-}
-
-#home-page-tagline {
+.content * {
   margin: 0.83em 0.5em;
 }
 
-.App-link {
-  color: #61dafb;
+.content-inner {
+  margin: 0px;
 }
 
-button {
-  background-color: #390099;
-  padding: 1em 1.5em;
-  font-family: 'Roboto', sans-serif;
+.sub-header {
+  font-style: italic;
+}
+
+#home-page-header {
+  font-size: 3.5em;
+  margin-bottom: 0.3em;
+  margin-top: 0px;
   color: white;
-  font-size: 1em;
-  border-radius: 10%;
-  border: 0.25em solid #FF0054;
+  text-align: center;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  font-family: 'Luckiest Guy', cursive;
 }
 
-button:hover {
-  background-color: #210058;
+#player1, #player2, #player3, #player4, #player5, #player6, #player7, #player8 {
+  width: 40%;
+  margin-bottom: 0px;
+}
+
+.button-holder {
+  width: 80%;
+  padding-bottom: 1.5em;
+  align-items: center;
+  margin: auto;
+}
+
+.button-holder button, .button-holder input {
+  margin-top: 0.5em !important;
+}
+
+.main-text-holder {
+  height: 20vh;
+}
+
+#text-input-holder {
+  height: 40vh;
+}
+
+.canvas-holder * {
+  margin: auto;
+}
+
+.dot {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 5px solid black;
+}
+
+#red-dot {
+  background-color: var(--red-drawing-colour);
+}
+
+#blue-dot {
+  background-color: var(--blue-drawing-colour);
+}
+
+#green-dot {
+  background-color: var(--green-drawing-colour);
+}
+
+#purple-dot {
+  background-color: var(--purple-drawing-colour);
+}
+
+#orange-dot {
+  background-color: var(--orange-drawing-colour);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -51,6 +146,38 @@ button:hover {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+@media only screen and (max-width: 1024px) {
+  button, input[type="submit"] {
+    width: 45%;
+    margin-bottom: 0px !important;
+  }
+
+  #player1, #player2, #player3, #player4, #player5, #player6, #player7, #player8 {
+    width: 80%;
+    margin-bottom: 0px;
+    margin-top: 0.5em;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  button, input[type="submit"] {
+    width: 40%;
+    font-size: 0.7em;
+    margin-bottom: 0px !important;
+  }
+
+  #player1, #player2, #player3, #player4, #player5, #player6, #player7, #player8 {
+    width: 80%;
+    margin-bottom: 0px;
+    margin-top: 0.5em;
+  }
+}
+
+#initial-drawing-main-text-holder {
+  height: 10vh;
+}
+
 
 @keyframes App-logo-spin {
   from {
