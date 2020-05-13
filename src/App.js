@@ -3,6 +3,7 @@ import './App.css';
 import HomePage from './pages/home-page';
 import InputNames from './pages/input-names';
 import InitialDrawings from './pages/initial-drawings';
+require('dotenv').config();
 
 class App extends React.Component {
   constructor() {
