@@ -1,5 +1,6 @@
 import React from 'react';
-import logo from '../images/paint-splat.png'
+import logo from '../images/paint-palette.png'
+import logoTwo from '../images/canvas.png'
 
 class HomePage extends React.Component {
 
@@ -9,6 +10,7 @@ class HomePage extends React.Component {
                 <h1 className="header-text" id="home-page-header">Squibble</h1>
                 <h2 className="header-text" id="home-page-tagline">The game where you quibble over your scribbles</h2>
                 <img src={logo} className="App-logo" alt="logo" />
+                <img src={logoTwo} className="App-logo" alt="logo" />
             </div>
         );
     }

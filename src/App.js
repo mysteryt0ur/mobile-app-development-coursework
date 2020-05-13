@@ -3,13 +3,13 @@ import './App.css';
 import HomePage from './pages/home-page';
 import InputNames from './pages/input-names';
 import InitialDrawings from './pages/initial-drawings';
-require('dotenv').config();
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
       name: "React",
+      buttonName: null,
       showHomePage: true,
       showInputNames: false,
     };
@@ -35,6 +35,10 @@ class App extends React.Component {
     }
   }
 
+  componentDidMount() {
+    setTimeout(() => { this.setState({ buttonName: "button-waiting"})}, 3000);
+  }
+
   render() {
     const { showHomePage, showInputNames, showInitialDrawings } = this.state;
     return (
@@ -43,7 +47,7 @@ class App extends React.Component {
         {showInputNames && <InputNames />}
         {showInitialDrawings && <InitialDrawings />}
         {this.state.showHomePage === true &&
-        <button onClick={() => this.hidePage("showHomePage")}>Get started!</button> }
+        <button className={this.state.buttonName} onClick={() => this.hidePage("showHomePage")}>Get started!</button> }
         {this.state.showInputNames === true &&
         <button onClick={() => this.hidePage("showInputNames")}>Lets Start!</button>}
         {this.state.showInitialDrawings === true &&
