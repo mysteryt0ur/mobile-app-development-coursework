@@ -3,10 +3,13 @@ import './App.css';
 import HomePage from './pages/home-page';
 import InputNames from './pages/input-names';
 import InitialDrawings from './pages/initial-drawings';
+import Firebase from 'firebase'
+import config from './firebase'
 
 class App extends React.Component {
   constructor() {
     super();
+    Firebase.initializeApp(config);
     this.state = {
       name: "React",
       buttonName: null,
@@ -36,7 +39,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => { this.setState({ buttonName: "button-waiting"})}, 3000);
+    setInterval(() => { this.setState({ buttonName: "button-waiting"})}, 3000);
   }
 
   render() {

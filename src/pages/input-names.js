@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Firebase from 'firebase';
 
 class InputNames extends React.Component {
     constructor(props) {
@@ -8,9 +8,7 @@ class InputNames extends React.Component {
             numOfPlayers: 3,
             players: ["", "", "", "", "", "", "", ""]
         };
-
         this.addNames = this.addNames.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     increasePlayers = () => {
@@ -41,10 +39,23 @@ class InputNames extends React.Component {
             }
         } return areNamesReady
     }
-    
-    handleSubmit = (event) => {
-        alert('An essay was submitted: ' + this.state.value);
-        event.preventDefault();
+
+    writePlayerNames = (playerNo) => {
+        let playerNumbers = ["playerOne", "playerTwo", "playerThree", "playerFour", "playerFive", "playerSix", "playerSeven", "playerEight"]
+        Firebase.database().ref('playersAndDrawings/' + playerNumbers[playerNo]).set({
+            playerName: this.state.players[playerNo],
+        });
+
+        console.log(playerNumbers[playerNo])
+    }
+
+    componentDidUpdate() {
+        for (let i = 0; i < this.state.numOfPlayers; i++) {
+            if (this.state.players[i] !== "") {
+                this.writePlayerNames(i)
+                console.log(this.state.players[i])
+            }
+        }
     }
 
     render() {
@@ -57,7 +68,7 @@ class InputNames extends React.Component {
                     <h5 className="sub-header">Enter the players names below. You need at least 3 players for this game. You can play with up to 8 players.</h5>
                 </div>
                 <div id="text-input-holder">
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit} >
                         <input type="text" value={this.state.players[0]} id="player1" onChange={this.addNames} />
                         <input type="text" value={this.state.players[1]} id="player2" onChange={this.addNames} />
                         <input type="text" value={this.state.players[2]} id="player3" onChange={this.addNames} />
