@@ -19,6 +19,20 @@ class App extends React.Component {
     this.hidePage = this.hidePage.bind(this);
   }
 
+  getPlayerNames = () => {
+    var finalNames = []
+    let possibleNumbers = ["playerOne", "playerTwo", "playerThree"]
+    for (let i = 0; i < 8; i++) {
+        let getTable = Firebase.database().ref('/playersAndDrawings/' + possibleNumbers[i] + '/playerName');
+        getTable.on("value", snapshot => {
+            if (snapshot.val() !== null) {
+                finalNames.push(snapshot.val().toString())
+            }
+        })
+    }
+    return finalNames
+  }
+
   hidePage(name) {
     console.log(name);
     switch (name) {
@@ -44,15 +58,16 @@ class App extends React.Component {
 
   render() {
     const { showHomePage, showInputNames, showInitialDrawings } = this.state;
+    let getPlayerNames = this.getPlayerNames()
     return (
       <div className="content">
         {showHomePage && <HomePage />}
         {showInputNames && <InputNames />}
-        {showInitialDrawings && <InitialDrawings />}
+        {showInitialDrawings && <InitialDrawings playerNames={getPlayerNames}/>}
         {this.state.showHomePage === true &&
         <button className={this.state.buttonName} onClick={() => this.hidePage("showHomePage")}>Get started!</button> }
         {this.state.showInputNames === true &&
-        <button onClick={() => this.hidePage("showInputNames")}>Lets Start!</button>}
+        <button onClick={() => { this.hidePage("showInputNames"); this.sortPlayerNames()}}>Lets Start!</button>}
         {this.state.showInitialDrawings === true &&
         <button onClick={() => this.hidePage("showInputNames")}>Hello</button> }
       </div>

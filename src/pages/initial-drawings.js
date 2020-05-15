@@ -76,11 +76,22 @@ class InitialDrawings extends React.Component {
 
     }
     
-    
+    // getRandomPlayer = () => {
+    //     let numOfPlayers = this.playerNames.length
+    //     console.log(numOfPlayers)
+    //     let randomPlayer = Math.floor(Math.random() * 4) + 1  
+
+    //     console.log(randomPlayer)
+    // }
+
 
     incrementDrawings = () => {
         this.setState({ drawingNumber: this.state.drawingNumber + 1 })
     }
+
+    // componentDidMount() {
+    //     this.getRandomPlayer()
+    // }
 
     render() {
         let colourToDraw = this.getColourAsProp()
@@ -88,7 +99,7 @@ class InitialDrawings extends React.Component {
             <div className="inner-content">
                 <div id="initial-drawing-main-text-holder">
                     <div className="header-and-button-holder">
-                        <h3 className="header-text">It's time to draw, !</h3>
+                        <h3 className="header-text">It's time to draw, {this.props.playerNames[0]}!</h3>
                     </div>
                     <h5 className="sub-header">Choose a colour below and start your initial doodle. The colour you pick will be yours for the entire game, so choose wisely.</h5>
                 </div>
