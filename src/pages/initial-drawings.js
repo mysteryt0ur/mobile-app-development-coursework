@@ -5,7 +5,7 @@ class InitialDrawings extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            drawingNumber: 1,
+            drawingNumber: 0,
             currentDrawColour: null,
             hasRedBeenChosen: true,
             hasBlueBeenChosen: true,
@@ -17,6 +17,7 @@ class InitialDrawings extends React.Component {
             hasGreenBeenUsed: false,
             hasPurpleBeenUsed: false,
             hasOrangeBeenUsed: false,
+            canDrawingBeSent: false,
         };
     }
 
@@ -40,6 +41,7 @@ class InitialDrawings extends React.Component {
     }
 
     getColourAsProp = () => {
+        console.log(this.state.currentDrawColour)
         return this.state.currentDrawColour
     }
 
@@ -76,51 +78,58 @@ class InitialDrawings extends React.Component {
 
     }
     
-    // getRandomPlayer = () => {
-    //     let numOfPlayers = this.playerNames.length
-    //     console.log(numOfPlayers)
-    //     let randomPlayer = Math.floor(Math.random() * 4) + 1  
-
-    //     console.log(randomPlayer)
-    // }
-
+    getPlayerOrder = () => {
+        let allPlayers = this.props.playerNames
+        for (let i = 0; i < allPlayers.length; i++) {
+            if (this.state.drawingNumber !== 4) {
+                return allPlayers[i]
+            }
+        }  
+    }
 
     incrementDrawings = () => {
         this.setState({ drawingNumber: this.state.drawingNumber + 1 })
+        console.log(this.state.drawingNumber)
     }
 
-    // componentDidMount() {
-    //     this.getRandomPlayer()
-    // }
+    returnDrawingNumber = () => {
+        return this.state.drawingNumber
+    }
+
+    drawingCanBePosted = (answer) => {
+        return answer
+    }
 
     render() {
         let colourToDraw = this.getColourAsProp()
+        let getPlayerName = this.getPlayerOrder()
+        let drawingNumber = this.returnDrawingNumber()
         return (
             <div className="inner-content">
                 <div id="initial-drawing-main-text-holder">
                     <div className="header-and-button-holder">
-                        <h3 className="header-text">It's time to draw, {this.props.playerNames[0]}!</h3>
+                        <h3 className="header-text">It's time to draw, {getPlayerName}!</h3>
                     </div>
                     <h5 className="sub-header">Choose a colour below and start your initial doodle. The colour you pick will be yours for the entire game, so choose wisely.</h5>
                 </div>
                 <div>
                     <span className="dot" id= {(this.state.hasRedBeenChosen === true ? "red-dot" : "red-dot disabled" )} disabled={this.state.hasRedBeenChosen} onClick={() => {this.changeDrawColour("red"); this.disableOtherColours("red")}}></span>
 
-                    <span className="dot" id= {(this.state.hasBlueBeenChosen === true ? "blue-dot" : "blue-dot disabled" )} onClick={() => {this.state.hasBlueBeenChosen === true && this.changeDrawColour("blue")}}
+                    <span className="dot" id= {(this.state.hasBlueBeenChosen === true ? "blue-dot" : "blue-dot disabled" )} disabled={this.state.hasBlueBeenChosen} onClick={() => {this.changeDrawColour("blue"); this.disableOtherColours("blue")}}
                     ></span>
-                    <span className="dot" id= {(this.state.hasGreenBeenChosen === true ? "green-dot" : "green-dot disabled" )}  onClick={() => this.changeDrawColour("green")} ></span>
-                    <span className="dot" id= {(this.state.hasPurpleBeenChosen === true ? "purple-dot" : "purple-dot disabled" )}  onClick={() => this.changeDrawColour("purple")} ></span>
-                    <span className="dot" id= {(this.state.hasOrangeBeenChosen === true ? "orange-dot" : "orange-dot disabled" )} onClick={() => this.changeDrawColour("orange")} ></span>
+
+                    <span className="dot" id= {(this.state.hasGreenBeenChosen === true ? "green-dot" : "green-dot disabled" )} disabled={this.state.hasGreenBeenChosen} onClick={() => {this.changeDrawColour("green"); this.disableOtherColours("green")}}></span>
+
+                    <span className="dot" id= {(this.state.hasPurpleBeenChosen === true ? "purple-dot" : "purple-dot disabled" )} disabled={this.state.hasPurpleBeenChosen} onClick={() => {this.changeDrawColour("purple"); this.disableOtherColours("purple")}}></span>
+
+                    <span className="dot" id= {(this.state.hasOrangeBeenChosen === true ? "orange-dot" : "orange-dot disabled" )} disabled={this.state.hasOrangeBeenChosen} onClick={() => {this.changeDrawColour("orange"); this.disableOtherColours("orange")}}></span>
+
                 </div>
                 <div className="canvas-holder">
-                    <Drawing currentDrawColour={colourToDraw}/>
+                    <Drawing currentDrawColour={colourToDraw} drawingNumber={drawingNumber} canDrawingBeSent={this.drawingCanBePosted(this.state.canDrawingBeSent)}/>
                 </div>
                 <div className="button-holder">
-                    <button onClick={() => { localStorage.setItem("savedDrawing", this.saveableCanvas.getSaveData());
-                    console.log(localStorage);
-                    //setTimeout(() => { this.saveableCanvas.undo(); }, 1000);
-                    setTimeout(function(){ console.log(localStorage + "hello" + localStorage.length) }, 1000)}
-                    }>Next Drawing</button>
+                    <button onClick={() => {this.setState({ canDrawingBeSent: true}); this.incrementDrawings()}}>Next Drawing</button>
                 </div>
             </div>
         )

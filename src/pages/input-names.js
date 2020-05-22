@@ -44,16 +44,19 @@ class InputNames extends React.Component {
         let playerNumbers = ["playerOne", "playerTwo", "playerThree", "playerFour", "playerFive", "playerSix", "playerSeven", "playerEight"]
         Firebase.database().ref('playersAndDrawings/' + playerNumbers[playerNo]).set({
             playerName: this.state.players[playerNo],
+            squiggleOne: null,
+            squiggleTwo: null, 
+            squiggleThree: null,
+            drawingOne: null, 
+            drawingTwo: null, 
+            drawingThree: null
         });
-
-        console.log(playerNumbers[playerNo])
     }
 
     componentDidUpdate() {
         for (let i = 0; i < this.state.numOfPlayers; i++) {
             if (this.state.players[i] !== "") {
                 this.writePlayerNames(i)
-                console.log(this.state.players[i])
             }
         }
     }
