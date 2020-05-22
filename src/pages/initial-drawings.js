@@ -40,11 +40,6 @@ class InitialDrawings extends React.Component {
         }
     }
 
-    getColourAsProp = () => {
-        console.log(this.state.currentDrawColour)
-        return this.state.currentDrawColour
-    }
-
     disableOtherColours = (colour) => {
         if (colour === "red") {
             this.setState({ hasBlueBeenChosen: false })
@@ -80,11 +75,30 @@ class InitialDrawings extends React.Component {
     
     getPlayerOrder = () => {
         let allPlayers = this.props.playerNames
-        for (let i = 0; i < allPlayers.length; i++) {
-            if (this.state.drawingNumber !== 4) {
-                return allPlayers[i]
-            }
-        }  
+        let playerName
+        if (this.state.drawingNumber < 3) {
+            playerName = allPlayers[0]
+        } else if (this.state.drawingNumber < 6) {
+            playerName = allPlayers[1]
+        } else if (this.state.drawingNumber < 9) {
+            playerName = allPlayers[2]
+        } else if (this.state.drawingNumber < 12) {
+            playerName = allPlayers[3]
+        } else if (this.state.drawingNumber < 15) {
+            playerName = allPlayers[4]
+        } else if (this.state.drawingNumber < 18) {
+            playerName = allPlayers[5]
+        } else if (this.state.drawingNumber < 21) {
+            playerName = allPlayers[6]
+        } else if (this.state.drawingNumber < 24) { 
+            playerName = allPlayers[7]
+        }
+
+        return playerName
+    }
+
+    getColourAsProp = () => {
+        return this.state.currentDrawColour
     }
 
     incrementDrawings = () => {
@@ -98,6 +112,10 @@ class InitialDrawings extends React.Component {
 
     drawingCanBePosted = (answer) => {
         return answer
+    }
+
+    stopDrawingPost = () => {
+        setTimeout(() => { this.setState({ canDrawingBeSent: false }) }, 100);
     }
 
     render() {
@@ -129,7 +147,7 @@ class InitialDrawings extends React.Component {
                     <Drawing currentDrawColour={colourToDraw} drawingNumber={drawingNumber} canDrawingBeSent={this.drawingCanBePosted(this.state.canDrawingBeSent)}/>
                 </div>
                 <div className="button-holder">
-                    <button onClick={() => {this.setState({ canDrawingBeSent: true}); this.incrementDrawings()}}>Next Drawing</button>
+                    <button onClick={() => {this.setState({ canDrawingBeSent: true}); this.incrementDrawings(); this.stopDrawingPost()}}>Next Drawing</button>
                 </div>
             </div>
         )
