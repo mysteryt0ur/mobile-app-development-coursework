@@ -23,6 +23,8 @@ class Drawing extends React.Component {
             playerNumber = "Three"
         } else if (drawingNumber < 13) {
             playerNumber = "Four"
+        } else {
+            playerNumber = "Five"
         }
         return playerNumber
     }
@@ -30,9 +32,9 @@ class Drawing extends React.Component {
     getNumberOfDrawing = () => {
         let playerDrawingNumber
         let drawingNumber = this.props.drawingNumber
-        if (drawingNumber === 1 || drawingNumber === 4 || drawingNumber === 7 || drawingNumber === 10 || drawingNumber === 13 || drawingNumber === 16 || drawingNumber === 19 || drawingNumber === 22) {
+        if (drawingNumber === 1 || drawingNumber === 4 || drawingNumber === 7 || drawingNumber === 10 || drawingNumber === 13) {
             playerDrawingNumber = "One"
-        } else if (drawingNumber === 2 || drawingNumber === 5 || drawingNumber === 8 || drawingNumber === 11 || drawingNumber === 14 || drawingNumber === 17 || drawingNumber === 20 || drawingNumber === 23) {
+        } else if (drawingNumber === 2 || drawingNumber === 5 || drawingNumber === 8 || drawingNumber === 11 || drawingNumber === 14) {
             playerDrawingNumber = "Two"
         } else {
             playerDrawingNumber = "Three"
@@ -48,13 +50,11 @@ class Drawing extends React.Component {
         var update = {};
         var drawingInfo = this.saveableCanvas.getSaveData()
         update[fullRef + "/" + squiggleName] = drawingInfo
+        update[fullRef + "/playerColour"] = this.props.currentDrawColour
         return Firebase.database().ref().update(update);
     }
 
     componentDidUpdate() {
-        console.log("update does work")
-        console.log(this.props.canDrawingBeSent)
-        console.log(this.props.drawingNumber + "is the drawing number")
         if (this.props.canDrawingBeSent === true) {
             this.postDrawingData()
             this.saveableCanvas.clear()

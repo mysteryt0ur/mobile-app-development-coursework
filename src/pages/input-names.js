@@ -6,13 +6,13 @@ class InputNames extends React.Component {
         super(props);
         this.state = {
             numOfPlayers: 3,
-            players: ["", "", "", "", "", "", "", ""]
+            players: ["", "", "", "", ""]
         };
         this.addNames = this.addNames.bind(this);
     }
 
     increasePlayers = () => {
-        if (this.state.numOfPlayers < 8) {
+        if (this.state.numOfPlayers < 5) {
             this.setState({ numOfPlayers: this.state.numOfPlayers + 1})
         }
     }
@@ -41,7 +41,7 @@ class InputNames extends React.Component {
     }
 
     writePlayerNames = (playerNo) => {
-        let playerNumbers = ["playerOne", "playerTwo", "playerThree", "playerFour", "playerFive", "playerSix", "playerSeven", "playerEight"]
+        let playerNumbers = ["playerOne", "playerTwo", "playerThree", "playerFour", "playerFive"]
         Firebase.database().ref('playersAndDrawings/' + playerNumbers[playerNo]).set({
             playerName: this.state.players[playerNo],
             squiggleOne: null,
@@ -68,7 +68,7 @@ class InputNames extends React.Component {
                     <div className="header-and-button-holder">
                         <h3 className="header-text">Who is playing?</h3>
                     </div>
-                    <h5 className="sub-header">Enter the players names below. You need at least 3 players for this game. You can play with up to 8 players.</h5>
+                    <h5 className="sub-header">Enter the players names below. You need at least 3 players for this game. You can play with up to 5 players.</h5>
                 </div>
                 <div id="text-input-holder">
                     <form onSubmit={this.handleSubmit} >
@@ -80,15 +80,6 @@ class InputNames extends React.Component {
                         }
                         {this.state.numOfPlayers >= 5 &&
                             <input type="text" value={this.state.players[4]} id="player5" onChange={this.addNames} />
-                        }
-                        {this.state.numOfPlayers >= 6 &&
-                            <input type="text" value={this.state.players[5]} id="player6" onChange={this.addNames} />
-                        }
-                        {this.state.numOfPlayers >= 7 &&
-                            <input type="text" value={this.state.players[6]} id="player7" onChange={this.addNames} />
-                        }
-                        {this.state.numOfPlayers >= 8 &&
-                            <input type="text" value={this.state.players[7]} id="player8" onChange={this.addNames} />
                         }
                     </form>
                 </div>

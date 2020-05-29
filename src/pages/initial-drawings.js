@@ -6,18 +6,18 @@ class InitialDrawings extends React.Component {
         super(props);
         this.state = {
             drawingNumber: 0,
-            currentDrawColour: null,
-            hasRedBeenChosen: true,
-            hasBlueBeenChosen: true,
-            hasGreenBeenChosen: true, 
-            hasPurpleBeenChosen: true,
-            hasOrangeBeenChosen: true,
+            currentDrawColour: "white",
+            hasRedBeenChosen: false,
+            hasBlueBeenChosen: false,
+            hasGreenBeenChosen: false, 
+            hasPurpleBeenChosen: false,
+            hasOrangeBeenChosen: false,
             hasRedBeenUsed: false,
             hasBlueBeenUsed: false,
             hasGreenBeenUsed: false,
             hasPurpleBeenUsed: false,
             hasOrangeBeenUsed: false,
-            canDrawingBeSent: false,
+            canDrawingBeSent: false
         };
     }
 
@@ -25,52 +25,74 @@ class InitialDrawings extends React.Component {
         if (colour === "red") {
             let drawColour = window.getComputedStyle(document.documentElement).getPropertyValue('--red-drawing-colour')
             this.setState({ currentDrawColour: drawColour })
+            this.setState({ hasRedBeenUsed: true })
         } else if (colour === "blue") {
             let drawColour = window.getComputedStyle(document.documentElement).getPropertyValue('--blue-drawing-colour')
             this.setState({ currentDrawColour: drawColour })
+            this.setState({ hasBlueBeenUsed: true })
         } else if (colour === "green") {
             let drawColour = window.getComputedStyle(document.documentElement).getPropertyValue('--green-drawing-colour')
             this.setState({ currentDrawColour: drawColour })
+            this.setState({ hasGreenBeenUsed: true })
         } else if (colour === "purple") {
             let drawColour = window.getComputedStyle(document.documentElement).getPropertyValue('--purple-drawing-colour')
             this.setState({ currentDrawColour: drawColour })
+            this.setState({ hasPurpleBeenUsed: true })
         } else if (colour === "orange") {
             let drawColour = window.getComputedStyle(document.documentElement).getPropertyValue('--orange-drawing-colour')
             this.setState({ currentDrawColour: drawColour })
+            this.setState({ hasOrangeBeenUsed: true })
         }
     }
 
     disableOtherColours = (colour) => {
         if (colour === "red") {
-            this.setState({ hasBlueBeenChosen: false })
-            this.setState({ hasGreenBeenChosen: false })
-            this.setState({ hasPurpleBeenChosen: false })
-            this.setState({ hasOrangeBeenChosen: false })
+            this.setState({ hasRedBeenChosen: true })
         } else if (colour === "blue") {
-            this.setState({ hasRedBeenChosen: false })
-            this.setState({ hasGreenBeenChosen: false })
-            this.setState({ hasPurpleBeenChosen: false })
-            this.setState({ hasOrangeBeenChosen: false })
+            this.setState({ hasBlueBeenChosen: true })
         } else if (colour === "green") {
-            this.setState({ hasRedBeenChosen: false })
-            this.setState({ hasBlueBeenChosen: false })
-            this.setState({ hasPurpleBeenChosen: false })
-            this.setState({ hasOrangeBeenChosen: false })
+            this.setState({ hasGreenBeenChosen: true })
         } else if (colour === "purple") {
-            this.setState({ hasRedBeenChosen: false })
-            this.setState({ hasBlueBeenChosen: false })
-            this.setState({ hasGreenBeenChosen: false })
-            this.setState({ hasOrangeBeenChosen: false })
+            this.setState({ hasPurpleBeenChosen: true })
         } else if (colour === "orange") {
-            this.setState({ hasRedBeenChosen: false })
-            this.setState({ hasBlueBeenChosen: false })
-            this.setState({ hasGreenBeenChosen: false })
-            this.setState({ hasPurpleBeenChosen: false })
+            this.setState({ hasOrangeBeenChosen: true })
         }
     }
 
-    disableUsedColours = (colour) => {
+    canColourBeUsed = (colour) => {
+        let haveOtherColoursBeenUsed = this.checkOtherColourUse(colour)
+        if (haveOtherColoursBeenUsed === false) {
+            this.disableOtherColours(colour)
+            this.changeDrawColour(colour)
+        }
+    }
 
+    resetColourUse = () => {
+        if (this.state.drawingNumber === 2 || this.state.drawingNumber === 5 || this.state.drawingNumber === 8 || this.state.drawingNumber === 11 || this.state.drawingNumber === 14) {
+            this.setState({ hasRedBeenChosen: false })
+            this.setState({ hasBlueBeenChosen: false })
+            this.setState({ hasGreenBeenChosen: false })
+            this.setState({ hasOrangeBeenChosen: false })
+            this.setState({ hasPurpleBeenChosen: false })
+            this.setState({ currentDrawColour: "white" })
+        }
+    }
+
+    checkOtherColourUse = (colour) => {
+        let haveOthersBeenUsed = true
+        if (colour === "red" && this.state.hasBlueBeenChosen === false && this.state.hasGreenBeenChosen === false && this.state.hasOrangeBeenChosen === false && this.state.hasPurpleBeenChosen === false) {
+            haveOthersBeenUsed = false
+        } else if (colour === "blue" && this.state.hasRedBeenChosen === false && this.state.hasGreenBeenChosen === false && this.state.hasOrangeBeenChosen === false && this.state.hasPurpleBeenChosen === false) {
+            haveOthersBeenUsed = false
+        } else if (colour === "green" && this.state.hasRedBeenChosen === false && this.state.hasBlueBeenChosen === false && this.state.hasOrangeBeenChosen === false && this.state.hasPurpleBeenChosen === false) {
+            haveOthersBeenUsed = false
+        } else if (colour === "purple" && this.state.hasRedBeenChosen === false && this.state.hasBlueBeenChosen === false && this.state.hasOrangeBeenChosen === false && this.state.hasGreenBeenChosen === false) {
+            haveOthersBeenUsed = false
+        } else if (colour === "orange" && this.state.hasRedBeenChosen === false && this.state.hasBlueBeenChosen === false && this.state.hasPurpleBeenChosen === false && this.state.hasGreenBeenChosen === false) {
+            haveOthersBeenUsed = false 
+        }
+
+        return haveOthersBeenUsed
     }
     
     getPlayerOrder = () => {
@@ -86,12 +108,6 @@ class InitialDrawings extends React.Component {
             playerName = allPlayers[3]
         } else if (this.state.drawingNumber < 15) {
             playerName = allPlayers[4]
-        } else if (this.state.drawingNumber < 18) {
-            playerName = allPlayers[5]
-        } else if (this.state.drawingNumber < 21) {
-            playerName = allPlayers[6]
-        } else if (this.state.drawingNumber < 24) { 
-            playerName = allPlayers[7]
         }
 
         return playerName
@@ -118,10 +134,22 @@ class InitialDrawings extends React.Component {
         setTimeout(() => { this.setState({ canDrawingBeSent: false }) }, 100);
     }
 
+    isDrawingStillBlank = () => {
+        let answer 
+        if (this.state.currentDrawColour !== "white") {
+            answer = false
+        } else {
+            answer = true
+        }
+
+        return answer
+    }
+
     render() {
         let colourToDraw = this.getColourAsProp()
         let getPlayerName = this.getPlayerOrder()
         let drawingNumber = this.returnDrawingNumber()
+        let isTheDrawingBlank = this.isDrawingStillBlank()
         return (
             <div className="inner-content">
                 <div id="initial-drawing-main-text-holder">
@@ -131,23 +159,28 @@ class InitialDrawings extends React.Component {
                     <h5 className="sub-header">Choose a colour below and start your initial doodle. The colour you pick will be yours for the entire game, so choose wisely.</h5>
                 </div>
                 <div>
-                    <span className="dot" id= {(this.state.hasRedBeenChosen === true ? "red-dot" : "red-dot disabled" )} disabled={this.state.hasRedBeenChosen} onClick={() => {this.changeDrawColour("red"); this.disableOtherColours("red")}}></span>
+                    {this.state.hasRedBeenUsed === false &&
+                    <span className="dot" id= {"red-dot"} onClick={() => this.canColourBeUsed("red")}></span>}
 
-                    <span className="dot" id= {(this.state.hasBlueBeenChosen === true ? "blue-dot" : "blue-dot disabled" )} disabled={this.state.hasBlueBeenChosen} onClick={() => {this.changeDrawColour("blue"); this.disableOtherColours("blue")}}
-                    ></span>
+                    {this.state.hasBlueBeenUsed === false &&
+                    <span className="dot" id= {"blue-dot"} onClick={() => this.canColourBeUsed("blue")}
+                    ></span>}
 
-                    <span className="dot" id= {(this.state.hasGreenBeenChosen === true ? "green-dot" : "green-dot disabled" )} disabled={this.state.hasGreenBeenChosen} onClick={() => {this.changeDrawColour("green"); this.disableOtherColours("green")}}></span>
+                    {this.state.hasGreenBeenUsed === false &&
+                    <span className="dot" id= {"green-dot"} onClick={() => this.canColourBeUsed("green")}></span>}
 
-                    <span className="dot" id= {(this.state.hasPurpleBeenChosen === true ? "purple-dot" : "purple-dot disabled" )} disabled={this.state.hasPurpleBeenChosen} onClick={() => {this.changeDrawColour("purple"); this.disableOtherColours("purple")}}></span>
+                    {this.state.hasPurpleBeenUsed === false &&
+                    <span className="dot" id= {"purple-dot"} onClick={() => this.canColourBeUsed("purple")}></span>}
 
-                    <span className="dot" id= {(this.state.hasOrangeBeenChosen === true ? "orange-dot" : "orange-dot disabled" )} disabled={this.state.hasOrangeBeenChosen} onClick={() => {this.changeDrawColour("orange"); this.disableOtherColours("orange")}}></span>
+                    {this.state.hasOrangeBeenUsed === false &&
+                    <span className="dot" id= {"orange-dot"} onClick={() => this.canColourBeUsed("orange")}></span>}
 
                 </div>
                 <div className="canvas-holder">
                     <Drawing currentDrawColour={colourToDraw} drawingNumber={drawingNumber} canDrawingBeSent={this.drawingCanBePosted(this.state.canDrawingBeSent)}/>
                 </div>
                 <div className="button-holder">
-                    <button onClick={() => {this.setState({ canDrawingBeSent: true}); this.incrementDrawings(); this.stopDrawingPost()}}>Next Drawing</button>
+                    <button disabled={isTheDrawingBlank} onClick={() => {this.setState({ canDrawingBeSent: true }); this.incrementDrawings(); this.resetColourUse(); this.stopDrawingPost()}}>Next Drawing</button>
                 </div>
             </div>
         )
