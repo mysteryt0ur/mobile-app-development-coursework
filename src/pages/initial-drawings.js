@@ -169,7 +169,7 @@ class InitialDrawings extends React.Component {
             <div className="inner-content">
                 <div id="initial-drawing-main-text-holder">
                     <div className="header-and-button-holder">
-                        <h3 className="header-text">Let's start doodling <span class="bold-name-text">{getPlayerName}!</span></h3>
+                        <h3 className="header-text">Let's start doodling <span className="bold-name-text">{getPlayerName}!</span></h3>
                     </div>
                     <h5 className="sub-header">Choose a colour below and start your initial doodle. The colour you pick will be yours for the entire game, so choose wisely.</h5>
                 </div>
@@ -192,7 +192,7 @@ class InitialDrawings extends React.Component {
 
                 </div>
                 <div className="canvas-holder">
-                    <Drawing currentDrawColour={colourToDraw} drawingNumber={drawingNumber} canDrawingBeSent={this.drawingCanBePosted(this.state.canDrawingBeSent)}/>
+                    <Drawing currentDrawColour={colourToDraw} drawingNumber={drawingNumber} drawingTime={false} canDrawingBeSent={this.drawingCanBePosted(this.state.canDrawingBeSent)}/>
                 </div>
                 <div className="button-holder">
                     {canButtonBeChanged === false &&

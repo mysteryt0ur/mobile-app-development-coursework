@@ -108,7 +108,7 @@ class App extends React.Component {
         {showHomePage && <HomePage />}
         {showInputNames && <InputNames />}
         {showInitialDrawings && <InitialDrawings playerNames={getPlayerNames}/>}
-        {showDrawingPage && <DrawingPage />}
+        {showDrawingPage && <DrawingPage playerNames={getPlayerNames}/>}
         {this.state.showHomePage === true &&
         <button className={this.state.buttonName} onClick={() => this.hidePage("showHomePage")}>Get started!</button> }
         {this.state.showInputNames === true &&

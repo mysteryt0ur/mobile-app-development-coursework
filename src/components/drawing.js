@@ -15,13 +15,13 @@ class Drawing extends React.Component {
     getNumberOfPlayer = () => {
         let playerNumber
         let drawingNumber = this.props.drawingNumber
-        if (drawingNumber < 2) {
+        if (drawingNumber <= 3) {
             playerNumber = "One"
-        } else if (drawingNumber < 4) {
+        } else if (drawingNumber <= 5) {
             playerNumber = "Two"
-        } else if (drawingNumber < 6) {
+        } else if (drawingNumber <= 7) {
             playerNumber = "Three"
-        } else if (drawingNumber < 8) {
+        } else if (drawingNumber <= 9) {
             playerNumber = "Four"
         } else {
             playerNumber = "Five"
@@ -32,12 +32,10 @@ class Drawing extends React.Component {
     getNumberOfDrawing = () => {
         let playerDrawingNumber
         let drawingNumber = this.props.drawingNumber
-        if (drawingNumber === 0 || drawingNumber === 4 || drawingNumber === 7 || drawingNumber === 10 || drawingNumber === 13) {
+        if (drawingNumber === 2 || drawingNumber === 4 || drawingNumber === 6 || drawingNumber === 8 || drawingNumber === 10) {
             playerDrawingNumber = "One"
-        } else if (drawingNumber === 2 || drawingNumber === 5 || drawingNumber === 8 || drawingNumber === 11 || drawingNumber === 14) {
-            playerDrawingNumber = "Two"
         } else {
-            playerDrawingNumber = "Three"
+            playerDrawingNumber = "Two"
         }
         return playerDrawingNumber
     }
@@ -50,7 +48,11 @@ class Drawing extends React.Component {
         var update = {};
         var drawingInfo = this.saveableCanvas.getSaveData()
         update[fullRef + "/" + squiggleName] = drawingInfo
-        update[fullRef + "/playerColour"] = this.props.currentDrawColour
+
+        if (squiggleNumberReturned === "One") {
+            update[fullRef + "/playerColour"] = this.props.currentDrawColour
+        }
+
         return Firebase.database().ref().update(update);
     }
 
@@ -60,6 +62,16 @@ class Drawing extends React.Component {
         update[fullRef] = this.props.drawingNumber
         console.log(this.props.drawingNumber + " is the drawing number")
         return Firebase.database().ref().update(update)
+    }
+
+    getDrawingData = () => {
+        let drawingDetails
+        let drawingLocation = Firebase.database().ref('playersAndDrawings/playerThree/squiggleOne')
+        drawingLocation.on("value", snapshot => {
+            drawingDetails = snapshot.val()
+        })
+        console.log(drawingDetails)
+        return drawingDetails
     }
 
     componentDidUpdate() {
@@ -74,11 +86,21 @@ class Drawing extends React.Component {
         return (
             <div>
                 <div className="canvas-holder">
+                {this.props.drawingTime === false &&
                 <CanvasDraw hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
                     canvasWidth={this.state.drawingWidth}
                     canvasHeight={this.state.drawingHeight}
                     brushColor={this.props.currentDrawColour}
                     brushRadius={this.state.brushSize}/>
+                }
+                {this.props.drawingTime === true &&
+                <CanvasDraw loadTimeOffset={5} hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
+                    canvasWidth={this.state.drawingWidth}
+                    canvasHeight={this.state.drawingHeight}
+                    brushColor={this.props.currentDrawColour}
+                    brushRadius={this.state.brushSize}
+                    saveData={this.getDrawingData()}/>
+                }
                 </div>
             </div>
         )
