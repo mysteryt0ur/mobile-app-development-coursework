@@ -11,7 +11,7 @@ class DrawingPage extends React.Component {
             canDrawingBeSent: false,
             chosenWords: [],
             isUserReady: false,
-            secondsLeft: 15
+            secondsLeft: 20
         };
     }
 
@@ -58,7 +58,9 @@ class DrawingPage extends React.Component {
 
     userIsReady = () => {
         this.setState({ isUserReady: true })
-        console.log(this.state.isUserReady)
+        setInterval(() => {
+            this.setState({ secondsLeft: this.state.secondsLeft - 1})
+        }, 1000)
     }
 
     returnRandomWord = (drawingNumber) => {
@@ -72,6 +74,15 @@ class DrawingPage extends React.Component {
         console.log(returningWord)
 
         return returningWord
+    }
+
+    returnSecondsLeft = () => {
+        return this.state.secondsLeft
+    }
+
+    vibrate = () => {
+        navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
+        navigator.vibrate([500]);
     }
 
     async componentDidMount () {
@@ -91,26 +102,34 @@ class DrawingPage extends React.Component {
         let getPlayerName = this.decidePlayerOrder()
         let drawingColour = this.getPlayerColour(getPlayerName)
         let randomWord = this.returnRandomWord(this.state.drawingNumber)
-        return (
-            <div className="inner-content">
-                <div id="initial-drawing-main-text-holder">
-                    <div className="header-and-button-holder">
-                        <h3 className="header-text">It's time to draw, {getPlayerName}</h3>
+
+        if (this.state.secondsLeft !== 0) {
+            return (
+                <div className="inner-content">
+                    <div id="initial-drawing-main-text-holder">
+                        <div className="header-and-button-holder">
+                            <h3 className="header-text">It's time to draw, {getPlayerName}</h3>
+                        </div>
+                        <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 15 seconds to draw your scribble.</h5>
                     </div>
-                    <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 15 seconds to draw your scribble.</h5>
+                    {this.state.isUserReady === false &&
+                    <div>
+                        <button onClick={() => this.userIsReady()}>I'm ready!</button>
+                    </div>
+                    }
+                    {this.state.isUserReady === true && 
+                    <div className="canvas-holder">
+                        <h2>{randomWord} - Timer: {this.returnSecondsLeft()}</h2>
+                        <Drawing currentDrawColour={drawingColour} drawingTime={true}/>
+                    </div>}
                 </div>
-                {this.state.isUserReady === false &&
-                <div>
-                    <button onClick={() => this.userIsReady()}>I'm ready!</button>
-                </div>
-                }
-                {this.state.isUserReady === true && 
-                <div className="canvas-holder">
-                    <h2>{randomWord}</h2>
-                    <Drawing currentDrawColour={drawingColour} drawingTime={true}/>
-                </div>}
-            </div>
-        )
+            )
+        } else {
+            this.vibrate();
+            return (
+                <div>howdy</div>
+            )
+        }
     }
 }
 
