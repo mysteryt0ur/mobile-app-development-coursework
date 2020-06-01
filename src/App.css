@@ -153,6 +153,12 @@ input[type="submit"] {
   background-color: var(--orange-drawing-colour);
 }
 
+.bold-name-text {
+  font-weight: 700;
+  color: var(--main-button-fill-colour);
+  margin: 0px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 3s linear;
