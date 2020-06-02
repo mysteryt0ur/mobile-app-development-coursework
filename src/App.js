@@ -24,7 +24,7 @@ class App extends React.Component {
 
   getPlayerNames = () => {
     var finalNames = []
-    let possibleNumbers = ["playerOne", "playerTwo", "playerThree"]
+    let possibleNumbers = ["playerOne", "playerTwo", "playerThree", "playerFour", "playerFive"]
     for (let i = 0; i < 5; i++) {
         let getTable = Firebase.database().ref('/playersAndDrawings/' + possibleNumbers[i] + '/playerName');
         getTable.on("value", snapshot => {
@@ -33,6 +33,7 @@ class App extends React.Component {
             }
         })
     }
+    console.log(finalNames)
     return finalNames
   }
 

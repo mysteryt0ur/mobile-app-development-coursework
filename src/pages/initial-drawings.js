@@ -148,6 +148,7 @@ class InitialDrawings extends React.Component {
     changeButtonLabel = () => {
         let answer = false
         let allPlayers = this.props.playerNames
+        console.log(allPlayers.length)
         if (allPlayers.length === 3 && this.state.drawingNumber === 6) {
             answer = true
         } else if (allPlayers.length === 4 && this.state.drawingNumber === 8) { 
@@ -195,9 +196,11 @@ class InitialDrawings extends React.Component {
                     <Drawing currentDrawColour={colourToDraw} drawingNumber={drawingNumber} drawingTime={false} canDrawingBeSent={this.drawingCanBePosted(this.state.canDrawingBeSent)}/>
                 </div>
                 <div className="button-holder">
+
                     {canButtonBeChanged === false &&
-                    <button disabled={isTheDrawingBlank} id= {isTheDrawingBlank === true ? "disabled-button" : null}onClick={() => {this.setState({ canDrawingBeSent: true }); this.incrementDrawings(); this.resetColourUse(); this.stopDrawingPost()}}>Next Squiggle</button>}
-                    {canButtonBeChanged === true && <button disabled={isTheDrawingBlank} id= {isTheDrawingBlank === true ? "disabled-button" : null}onClick={() => {this.setState({ canDrawingBeSent: true }); this.incrementDrawings(); this.resetColourUse(); this.stopDrawingPost()}}>Submit Squiggle and Start Drawing!</button>}
+                    <button disabled={isTheDrawingBlank} onClick={() => {this.setState({ canDrawingBeSent: true }); this.incrementDrawings(); this.resetColourUse(); this.stopDrawingPost()}}>Next Squiggle</button>}
+
+                    {canButtonBeChanged === true && <button disabled={isTheDrawingBlank} id="start-drawing-button" onClick={() => {this.setState({ canDrawingBeSent: true }); this.incrementDrawings(); this.resetColourUse(); this.stopDrawingPost()}}>Submit Squiggle and Start Drawing!</button>}
                 </div>
             </div>
         )

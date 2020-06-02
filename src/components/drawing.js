@@ -70,8 +70,27 @@ class Drawing extends React.Component {
         drawingLocation.on("value", snapshot => {
             drawingDetails = snapshot.val()
         })
-        console.log(drawingDetails)
         return drawingDetails
+    }
+
+    postFinishedDrawing = () => {
+        let drawingNumber
+        let currentPlayer = this.props.currentPlayer
+        let currentPlayers = this.props.playerNames
+        let update = {};
+
+        console.log(this.props.drawingNumber + " is the current drawing number")
+        console.log(this.props.playerNames)
+
+        if (this.props.drawingNumber <= currentPlayers.length) {
+            drawingNumber = "drawingOne"
+        } else {
+            drawingNumber = "drawingTwo"
+        }
+
+        update['playersAndDrawings/' + currentPlayer + '/' + drawingNumber] = this.saveableCanvas.getSaveData();
+        console.log(update + " is the update location")
+        return Firebase.database().ref().update(update)
     }
 
     componentDidUpdate() {
@@ -79,6 +98,10 @@ class Drawing extends React.Component {
             this.postDrawingData()
             this.postDrawingNumbers()
             this.saveableCanvas.clear()
+        }
+
+        if (this.props.canFinalDrawingBeSent === true) {
+            this.postFinishedDrawing()
         }
     }
 

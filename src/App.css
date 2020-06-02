@@ -159,8 +159,29 @@ input[type="submit"] {
   margin: 0px;
 }
 
+.big-image {
+  height: 50vmin;
+}
+
+#times-up-button {
+  width: 50%;
+  margin: 0;
+}
+
+#drawing-desc {
+  padding: 0px 0px 0.5em 0px;
+}
+
+#timer-time {
+  color: var(--red-drawing-colour);
+}
+
+#start-drawing-button {
+  width: 75%;
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  .App-logo, .big-image  {
     animation: App-logo-spin infinite 3s linear;
   }
 }
