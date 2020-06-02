@@ -4,7 +4,7 @@ import Firebase from 'firebase'
 import Clock from '../images/alarm-clock.png'
 import Paintbrush from '../images/cartoon-paintbrush.png'
 
-class DrawingPage extends React.Component {
+class DrawingAndRatingPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,7 +13,8 @@ class DrawingPage extends React.Component {
             chosenWords: [],
             isUserReady: false,
             secondsLeft: 20,
-            canFinalDrawingBeSent: false
+            canFinalDrawingBeSent: false,
+            timeToRate: false,
         };
     }
 
@@ -191,6 +192,19 @@ class DrawingPage extends React.Component {
                     </div>}
                 </div>
             )
+        } else if (this.state.timeToRate === true) {
+            return (
+                <div className="content-inner">
+                    <img src={Clock} className="big-image" alt="times-up-alarm-clock"/>
+                    <div>
+                        <h3>Times up! Pass to <b><span className="bold-name-text">{nextPlayerFull}</span></b></h3>
+                        <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
+                    </div>
+                    <div>
+                        <button id="times-up-button" onClick={this.newDrawing}>I'm ready to draw!</button>
+                    </div>
+                </div>
+            )
         } else {
             this.vibrate();
             return (
@@ -209,4 +223,4 @@ class DrawingPage extends React.Component {
     }
 }
 
-export default DrawingPage;
+export default DrawingAndRatingPage;

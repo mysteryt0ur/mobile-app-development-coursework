@@ -3,7 +3,7 @@ import './App.css';
 import HomePage from './pages/home-page';
 import InputNames from './pages/input-names';
 import InitialDrawings from './pages/initial-drawings';
-import DrawingPage from './pages/drawing-page';
+import DrawingAndRatingPage from './pages/drawing-page';
 import Firebase from 'firebase'
 import config from './firebase'
 
@@ -33,13 +33,22 @@ class App extends React.Component {
             }
         })
     }
-    console.log(finalNames)
     return finalNames
   }
 
   refreshDatabase = () => {
     let database = Firebase.database().ref('playersAndDrawings/');
     database.remove()
+  }
+
+  validatePlayerNames = () => {
+    let answer = true
+    let thePlayers = this.getPlayerNames()
+    if (thePlayers.length >= 3) {
+      answer = false
+    }
+
+    return answer
   }
 
   checkDrawingsCanBeDone = () => {
@@ -109,10 +118,12 @@ class App extends React.Component {
         {showHomePage && <HomePage />}
         {showInputNames && <InputNames />}
         {showInitialDrawings && <InitialDrawings playerNames={getPlayerNames}/>}
-        {showDrawingPage && <DrawingPage playerNames={getPlayerNames}/>}
+        {showDrawingPage && <DrawingAndRatingPage playerNames={getPlayerNames}/>}
         {this.state.showHomePage === true &&
         <button className={this.state.buttonName} onClick={() => this.hidePage("showHomePage")}>Get started!</button> }
-        {this.state.showInputNames === true &&
+        {this.state.showInputNames === true && this.validatePlayerNames() === true &&
+        <button className="disabled-button" disabled={this.validatePlayerNames }onClick={() => { this.hidePage("showInputNames")}}>Lets go!</button>}
+        {this.state.showInputNames === true && this.validatePlayerNames() === false &&
         <button onClick={() => { this.hidePage("showInputNames")}}>Lets go!</button>}
         {this.state.showInitialDrawings === true}
         {this.state.showDrawingPage === true}

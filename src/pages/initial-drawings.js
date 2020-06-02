@@ -172,7 +172,7 @@ class InitialDrawings extends React.Component {
                     <div className="header-and-button-holder">
                         <h3 className="header-text">Let's start doodling <span className="bold-name-text">{getPlayerName}!</span></h3>
                     </div>
-                    <h5 className="sub-header">Choose a colour below and start your initial doodle. The colour you pick will be yours for the entire game, so choose wisely.</h5>
+                    <h5 className="sub-header">Choose a colour below (this will be yours for the whole game) and draw your squiggle. Once done, click the button below to submit. Each player will draw two squiggles.</h5>
                 </div>
                 <div>
                     {this.state.hasRedBeenUsed === false &&

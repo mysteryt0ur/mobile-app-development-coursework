@@ -9,6 +9,8 @@
   --dark-green-colour: rgb(0, 107, 21);
   --purple-drawing-colour: #4900DF;
   --orange-drawing-colour: #DF6300;
+  --grey-colour: rgb(194, 194, 194);
+  --dark-grey-colour: rgb(110, 110, 110);
 }
 
 input[type="text"]  {  
@@ -136,6 +138,13 @@ html, body {
   perspective: 1000px;
 }
 
+.disabled-button {
+  background-color: var(--grey-colour);
+  border-bottom: 5px solid var(--dark-grey-colour);
+  color: black;
+  text-shadow: none;
+}
+
 .main-text-holder {
   height: 25vh;
 }
@@ -154,7 +163,7 @@ html, body {
 }
 
 .canvas {
-  margin: 0 !important!;
+  margin: 0 !important;
 }
 
 .dot {
@@ -255,7 +264,7 @@ html, body {
 }
 
 #initial-drawing-main-text-holder {
-  height: 12vh;
+  height: 14vh;
 }
 
 @keyframes shake {
