@@ -1,7 +1,8 @@
 import React from 'react';
 import Drawing from '../components/drawing'
 import Firebase from 'firebase'
-import clock from '../images/alarm-clock.png'
+import Clock from '../images/alarm-clock.png'
+import Paintbrush from '../images/cartoon-paintbrush.png'
 
 class DrawingPage extends React.Component {
     constructor(props) {
@@ -168,22 +169,25 @@ class DrawingPage extends React.Component {
         if (this.state.secondsLeft !== 0) {
             return (
                 <div className="inner-content">
-                    <div id="initial-drawing-main-text-holder">
-                        <div className="header-and-button-holder">
-                            <h3 className="header-text">It's time to draw,<span className="bold-name-text">{this.getPlayerName(getPlayerName)}</span></h3>
-                        </div>
-                        <h5 className="sub-header" id="drawing-desc">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
+                    <div className="header-and-button-holder">
+                        <h3 className="header-text">It's time to draw, <span className="bold-name-text">{this.getPlayerName(getPlayerName)}!</span></h3>
                     </div>
                     {this.state.isUserReady === false &&
                     <div>
+                        <h5 className="sub-header" id="drawing-desc">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
                         <button onClick={this.userIsReady}>I'm ready!</button>
                     </div>
                     }
                     {this.state.isUserReady === true && 
                     <div className="canvas-holder">
-                        <h3>Your word is: {randomWord}</h3>
-                        <h3>Time left: <span id="timer-time">{this.returnSecondsLeft()}</span></h3>
+                        <div id="drawing-info">
+                            <h3>Your word is: <i>{randomWord}</i></h3>
+                            <h3>Time left: <span id="timer-time">{this.returnSecondsLeft()}</span></h3>
+                        </div>
                         <Drawing currentDrawColour={drawingColour} drawingNumber ={this.props.drawingNumber} drawingTime={true} currentPlayer={getPlayerName} canFinalDrawingBeSent={this.drawingCanBePosted()} playerNames={this.props.playerNames}/>
+                        <div id="cartoon-icon">
+                            <img src={Paintbrush} className="small-image" alt="cartoon-paintbrush"/>
+                        </div>
                     </div>}
                 </div>
             )
@@ -191,7 +195,7 @@ class DrawingPage extends React.Component {
             this.vibrate();
             return (
                 <div className="content-inner">
-                    <img src={clock} className="big-image" alt="times-up-alarm-clock"/>
+                    <img src={Clock} className="big-image" alt="times-up-alarm-clock"/>
                     <div>
                         <h3>Times up! Pass to <b><span className="bold-name-text">{nextPlayerFull}</span></b></h3>
                         <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>

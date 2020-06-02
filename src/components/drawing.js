@@ -6,8 +6,8 @@ class Drawing extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            drawingHeight: 300,
-            drawingWidth: 300,
+            drawingHeight: 280,
+            drawingWidth: 280,
             brushSize: 3
         };
     }
@@ -108,9 +108,9 @@ class Drawing extends React.Component {
     render() {
         return (
             <div>
-                <div className="canvas-holder">
+                <div className="canvas-holder" id="canvas">
                 {this.props.drawingTime === false &&
-                <CanvasDraw hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
+                <CanvasDraw className="canvas"  hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
                     canvasWidth={this.state.drawingWidth}
                     canvasHeight={this.state.drawingHeight}
                     brushColor={this.props.currentDrawColour}
