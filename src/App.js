@@ -113,7 +113,7 @@ class App extends React.Component {
         {this.state.showHomePage === true &&
         <button className={this.state.buttonName} onClick={() => this.hidePage("showHomePage")}>Get started!</button> }
         {this.state.showInputNames === true &&
-        <button onClick={() => { this.hidePage("showInputNames")}}>Lets Start!</button>}
+        <button onClick={() => { this.hidePage("showInputNames")}}>Lets go!</button>}
         {this.state.showInitialDrawings === true}
         {this.state.showDrawingPage === true}
       </div>

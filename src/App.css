@@ -2,8 +2,11 @@
   --main-button-fill-colour: #390099;
   --main-button-border-colour: #210058;
   --red-drawing-colour: #DF0400;
+  --dark-red-colour: rgb(133, 3, 1);
   --blue-drawing-colour: #00B8DF;
   --green-drawing-colour: #00DF2B;
+  --med-green-colour: rgb(0, 168, 34);
+  --dark-green-colour: rgb(0, 107, 21);
   --purple-drawing-colour: #4900DF;
   --orange-drawing-colour: #DF6300;
 }
@@ -40,6 +43,16 @@ input[type="submit"] {
   background-color: rgb(6, 165, 6);
   border-bottom: 5px solid green;
   text-shadow: 0px -2px green;
+}
+
+b {
+  margin: 0px !important;
+}
+
+html, body {
+  margin: 0; 
+  height: 100%; 
+  overflow: hidden
 }
 
 .App-logo {
@@ -90,6 +103,16 @@ input[type="submit"] {
   padding: 0em 1em;
 }
 
+#add-player-button {
+  background-color: var(--med-green-colour);
+  border-bottom: 5px solid var(--dark-green-colour);
+}
+
+#delete-player-button {
+  background-color: var(--red-drawing-colour);
+  border-bottom: 5px solid var(--dark-red-colour);
+}
+
 #player1, #player2, #player3, #player4, #player5, #player6, #player7, #player8 {
   width: 40%;
   margin-bottom: 0px;
@@ -97,7 +120,7 @@ input[type="submit"] {
 
 .button-holder {
   width: 80%;
-  padding-bottom: 1.5em;
+  padding-bottom: 0em;
   align-items: center;
   margin: auto;
 }
@@ -114,7 +137,7 @@ input[type="submit"] {
 }
 
 .main-text-holder {
-  height: 20vh;
+  height: 25vh;
 }
 
 #text-input-holder {
@@ -123,6 +146,15 @@ input[type="submit"] {
 
 .canvas-holder * {
   margin: auto;
+}
+
+#canvas {
+  border: 0.4em green;
+  border-style: dashed;
+}
+
+.canvas {
+  margin: 0 !important!;
 }
 
 .dot {
@@ -163,6 +195,15 @@ input[type="submit"] {
   height: 50vmin;
 }
 
+.small-image {
+  height: 20vmin;
+  margin-top: 0.5em;
+}
+
+#drawing-info {
+  margin-bottom: 1em;
+}
+
 #times-up-button {
   width: 50%;
   margin: 0;
@@ -181,7 +222,7 @@ input[type="submit"] {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo, .big-image  {
+  .App-logo, .big-image, .small-image  {
     animation: App-logo-spin infinite 3s linear;
   }
 }
@@ -214,7 +255,7 @@ input[type="submit"] {
 }
 
 #initial-drawing-main-text-holder {
-  height: 10vh;
+  height: 12vh;
 }
 
 @keyframes shake {

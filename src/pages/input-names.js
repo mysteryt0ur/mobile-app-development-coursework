@@ -84,8 +84,8 @@ class InputNames extends React.Component {
                     </form>
                 </div>
                 <div className="button-holder">
-                    <button onClick={this.increasePlayers}>Add player</button>
-                    <button onClick={this.decreasePlayers}>Delete player</button>
+                    <button id="add-player-button" onClick={this.increasePlayers}>Add player</button>
+                    <button id="delete-player-button" onClick={this.decreasePlayers}>Delete player</button>
                 </div>
             </div>
         )
