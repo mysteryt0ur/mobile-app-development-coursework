@@ -18,9 +18,8 @@ class DrawingAndRatingPage extends React.Component {
         };
     }
 
-    decidePlayerOrder = () => {
+    decidePlayerOrder = (drawingNumber) => {
         let namesOfPlayers = this.props.playerNames
-        let drawingNumber = this.state.drawingNumber
         let possiblePlayers = ["playerOne", "playerTwo", "playerThree","playerFour", "playerFive"]
         let numOfPlayers = namesOfPlayers.length
         let whoIsPlaying
@@ -139,6 +138,23 @@ class DrawingAndRatingPage extends React.Component {
         return this.props.playerId
     }
 
+    getPreviousPlayerName = () => {
+        return this.decidePlayerOrder(this.state.drawingNumber - 1)      
+    }
+
+    isDrawingNumberEven = () => {
+        let isTheNumberEven = true
+        if (this.state.drawingNumber === 1 || this.state.drawingNumber === 3 || this.state.drawingNumber === 5 || this.state.drawingNumber === 7 || this.state.drawingNumber === 9) {
+            isTheNumberEven = false
+        }
+
+        return isTheNumberEven
+    }
+
+    itsTimeToRate = () => {
+        this.setState({ timeToRate: true })
+    }
+
     async componentDidMount () {
         const url = "https://random-word-api.herokuapp.com/word?number=5"
         const response = await fetch(url);
@@ -157,7 +173,7 @@ class DrawingAndRatingPage extends React.Component {
     }
 
     render() {
-        let getPlayerName = this.decidePlayerOrder()
+        let getPlayerName = this.decidePlayerOrder(this.state.drawingNumber)
         let drawingColour = this.getPlayerColour(getPlayerName)
         let randomWord = this.returnRandomWord(this.state.drawingNumber)
         let nextPlayer = this.workOutNextPlayer()
@@ -181,7 +197,7 @@ class DrawingAndRatingPage extends React.Component {
                             <h3>Your word is: <i>{randomWord}</i></h3>
                             <h3>Time left: <span id="timer-time">{this.returnSecondsLeft()}</span></h3>
                         </div>
-                        <Drawing currentDrawColour={drawingColour} drawingNumber={this.state.drawingNumber} drawingTime={true} currentDoodler={this.workOutNextPlayer()} currentPlayer={getPlayerName} canFinalDrawingBeSent={this.drawingCanBePosted()} playerNames={this.returnPlayerNames()} playerId={this.returnPlayerIdProp()}/>
+                        <Drawing currentDrawColour={drawingColour} drawingNumber={this.state.drawingNumber} drawingTime={true} ratingTime={false} currentDoodler={this.workOutNextPlayer()} currentPlayer={getPlayerName} canFinalDrawingBeSent={this.drawingCanBePosted()} playerNames={this.returnPlayerNames()} playerId={this.returnPlayerIdProp()}/>
                         <div id="cartoon-icon">
                             <img src={Paintbrush} className="small-image" alt="cartoon-paintbrush"/>
                         </div>
@@ -190,14 +206,13 @@ class DrawingAndRatingPage extends React.Component {
             )
         } else if (this.state.timeToRate === true) {
             return (
-                <div className="content-inner">
-                    <img src={Clock} className="big-image" alt="times-up-alarm-clock"/>
-                    <div>
-                        <h3>Times up! Pass to <b><span className="bold-name-text">{nextPlayerFull}</span></b></h3>
-                        <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
-                    </div>
-                    <div>
-                        <button id="times-up-button" onClick={this.newDrawing}>I'm ready to draw!</button>
+                <div className="inner-content">
+                    <div className="header-and-button-holder">
+                        <h3 className="header-text">It's time to rate!<span className="bold-name-text">{this.getPlayerName(getPlayerName)}!</span></h3>
+
+                        <Drawing currentDrawColour={drawingColour} drawingNumber={this.state.drawingNumber} drawingTime={true} ratingTime={true} currentDoodler={this.workOutNextPlayer()} currentPlayer={getPlayerName}  playerNames={this.returnPlayerNames()} playerId={this.returnPlayerIdProp()}/>
+
+                        <Drawing currentDrawColour={drawingColour} drawingNumber={this.state.drawingNumber} drawingTime={true} ratingTime={true} currentDoodler={this.workOutNextPlayer()} currentPlayer={this.getPreviousPlayerName()} playerNames={this.returnPlayerNames()} playerId={this.returnPlayerIdProp()}/>
                     </div>
                 </div>
             )
@@ -206,13 +221,20 @@ class DrawingAndRatingPage extends React.Component {
             return (
                 <div className="content-inner">
                     <img src={Clock} className="big-image" alt="times-up-alarm-clock"/>
-                    <div>
-                        <h3>Times up! Pass to <b><span className="bold-name-text">{nextPlayerFull}</span></b></h3>
-                        <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
-                    </div>
-                    <div>
-                        <button id="times-up-button" onClick={this.newDrawing}>I'm ready to draw!</button>
-                    </div>
+                    {this.isDrawingNumberEven() === false &&
+                        <div>
+                            <h3>Times up! Pass to <b><span className="bold-name-text">{nextPlayerFull}</span></b></h3>
+                            <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
+                            <button id="times-up-button" onClick={this.newDrawing}>I'm ready to draw!</button>
+                        </div>
+                    }
+                    {this.isDrawingNumberEven() === true &&
+                        <div>
+                            <h3>Times up! It's now time to rate!</h3>
+                            <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
+                            <button id="times-up-button" onClick={this.itsTimeToRate}>Rating time!</button>
+                        </div>
+                    }
                 </div>
             )
         }

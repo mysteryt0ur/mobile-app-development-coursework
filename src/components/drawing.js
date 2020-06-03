@@ -64,23 +64,34 @@ class Drawing extends React.Component {
         return Firebase.database().ref().update(update)
     }
 
-    getDrawingData = () => {
+    getDrawingData = (ratingTimePlayer) => {
         let drawingDetails
         let squiggleNumber
+        let drawingLocation
         let nextDoodle = this.props.currentDoodler
         let currentPlayers = this.props.playerNames
+        
+        if (this.props.ratingTime === false) {
+            if (this.props.drawingNumber <= currentPlayers.length) {
+                squiggleNumber = "squiggleOne"
+            } else {
+                squiggleNumber= "squiggleTwo"
+            }
 
-        if (this.props.drawingNumber <= currentPlayers.length) {
-            squiggleNumber = "squiggleOne"
-        } else {
-            squiggleNumber= "squiggleTwo"
+            drawingLocation = Firebase.database().ref('playersAndDrawings/' + this.props.playerId + '/' + nextDoodle + '/' + squiggleNumber)
+        } else if (this.props.ratingTime === true) {
+            if (this.props.drawingNumber <= currentPlayers.length) {
+                squiggleNumber = "drawingOne"
+            } else {
+                squiggleNumber= "drawingTwo"
+            }
+
+            drawingLocation = Firebase.database().ref('playersAndDrawings/' + this.props.playerId + '/' + ratingTimePlayer + '/' + squiggleNumber)
         }
 
-        let drawingLocation = Firebase.database().ref('playersAndDrawings/' + this.props.playerId + '/' + nextDoodle + '/' + squiggleNumber)
-
-        drawingLocation.on("value", snapshot => {
-            drawingDetails = snapshot.val()
-        })
+            drawingLocation.on("value", snapshot => {
+                drawingDetails = snapshot.val()
+            })
 
         return drawingDetails
     }
@@ -116,22 +127,38 @@ class Drawing extends React.Component {
     render() {
         return (
             <div>
-                <div id="canvas">
-                {this.props.drawingTime === false &&
-                <CanvasDraw className="canvas"  hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
-                    canvasWidth={this.state.drawingWidth}
-                    canvasHeight={this.state.drawingHeight}
-                    brushColor={this.props.currentDrawColour}
-                    brushRadius={this.state.brushSize}/>
-                }
-                {this.props.drawingTime === true &&
-                <CanvasDraw loadTimeOffset={5} hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
-                    canvasWidth={this.state.drawingWidth}
-                    canvasHeight={this.state.drawingHeight}
-                    brushColor={this.props.currentDrawColour}
-                    brushRadius={this.state.brushSize}
-                    saveData={this.getDrawingData()}/>
-                }
+                <div>
+                    {this.props.drawingTime === false &&
+                    <div id="canvas">
+                        <CanvasDraw className="canvas"  hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
+                            canvasWidth={this.state.drawingWidth}
+                            canvasHeight={this.state.drawingHeight}
+                            brushColor={this.props.currentDrawColour}
+                            brushRadius={this.state.brushSize}/>
+                    </div>
+                    }
+                    {this.props.drawingTime === true && this.props.ratingTime === false &&
+                    <div id="canvas">
+                        <CanvasDraw loadTimeOffset={5} hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
+                        canvasWidth={this.state.drawingWidth}
+                        canvasHeight={this.state.drawingHeight}
+                        brushColor={this.props.currentDrawColour}
+                        brushRadius={this.state.brushSize}
+                        saveData={this.getDrawingData()}/>
+                    </div>
+                    }
+                </div>
+                <div>
+                    {this.props.drawingTime === true && this.props.ratingTime === true &&
+                    <div id="canvas-rate">
+                        <CanvasDraw loadTimeOffset={5} disabled hideGrid ref={canvasDraw => (this.loadableCanvas = canvasDraw)} 
+                        canvasWidth={this.state.drawingWidth - 60}
+                        canvasHeight={this.state.drawingHeight - 60}
+                        brushColor={this.props.currentDrawColour}
+                        brushRadius={this.state.brushSize}
+                        saveData={this.getDrawingData(this.props.currentPlayer)}/>
+                    </div>
+                    }
                 </div>
             </div>
         )

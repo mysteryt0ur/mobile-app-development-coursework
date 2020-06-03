@@ -158,11 +158,22 @@ html, body {
   width: 300px;
 }
 
-#canvas {
+#canvas, #canvas-rate {
   border: 0.4em var(--med-green-colour);
   border-style: dashed;
   margin: auto;
+}
+
+#canvas {
   width: 280px;
+}
+
+#canvas-rate {
+  width: 220px;
+}
+
+#canvas-rate div {
+  margin: 0px;
 }
 
 .dot {
