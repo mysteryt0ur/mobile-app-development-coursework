@@ -221,7 +221,7 @@ class DrawingAndRatingPage extends React.Component {
         if (this.state.secondsLeft === 1) {
             setTimeout(() => {
                 this.startDrawingSend();
-            }, 990)   
+            }, 9)   
         }
 
         if (this.state.secondsLeft === 0) {

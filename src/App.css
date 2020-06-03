@@ -27,7 +27,7 @@ button, input[type="submit"] {
   padding: 1em 1.5em;
   font-family: 'Roboto', sans-serif; font-weight: 400;
   color: white;
-  font-size: 0.8em;
+  font-size: 0.75em;
   border-radius: 10px;
   width: 25%;
   border-left: 0px;
@@ -56,6 +56,14 @@ html, body {
   margin: 0; 
   height: 100%; 
   overflow: hidden
+}
+
+h3 {
+  font-size: 1em;
+}
+
+h5 {
+  font-size: 0.7em !important;
 }
 
 .App-logo {
@@ -147,7 +155,7 @@ html, body {
 }
 
 .main-text-holder {
-  height: 25vh;
+  height: 15vh;
 }
 
 #text-input-holder {
@@ -231,12 +239,18 @@ html, body {
   border-bottom: 5px solid var(--dark-green-colour);
 }
 
+#drawing-colours {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .dot {
   height: 40px;
   width: 40px;
   border-radius: 50%;
   display: inline-block;
   border: 5px solid black;
+  margin: 0px 5px;
 }
 
 #red-dot {
@@ -301,7 +315,8 @@ html, body {
 }
 
 #initial-drawing-main-text-holder {
-  height: 14vh;
+  height: 13vh;
+  margin-bottom: 0px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -369,10 +384,6 @@ html, body {
 
   #initial-drawing-main-text-holder {
     margin-bottom: 0px;
-  }
-
-  #drawing-colours {
-    margin-top: 0px;
   }
 }
 

@@ -90,7 +90,7 @@ class App extends React.Component {
   }
 
   hidePage(name) {
-      switch (name) {
+    switch (name) {
       case "showHomePage":
         this.setState({ showHomePage: false });
         this.setState({ showInputNames: true })
