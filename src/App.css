@@ -216,7 +216,7 @@ html, body {
   padding: 5px 5px 0px;
 }
 
-.low-rating {
+.high-rating {
   background-color: var(--red-drawing-colour);
   border-bottom: 5px solid var(--dark-red-colour);
 }

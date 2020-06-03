@@ -146,7 +146,7 @@ class Drawing extends React.Component {
                     }
                     {this.props.drawingTime === true && this.props.ratingTime === false &&
                     <div id="canvas">
-                        <CanvasDraw loadTimeOffset={5} hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
+                        <CanvasDraw loadTimeOffset={0} hideGrid ref={canvasDraw => (this.saveableCanvas = canvasDraw)} 
                         canvasWidth={this.state.drawingWidth}
                         canvasHeight={this.state.drawingHeight}
                         brushColor={this.props.currentDrawColour}

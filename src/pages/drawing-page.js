@@ -3,6 +3,7 @@ import Drawing from '../components/drawing'
 import Firebase from 'firebase'
 import Clock from '../images/alarm-clock.png'
 import Paintbrush from '../images/cartoon-paintbrush.png'
+import Celebrate from '../images/celebrate.png'
 
 class DrawingAndRatingPage extends React.Component {
     constructor(props) {
@@ -15,6 +16,14 @@ class DrawingAndRatingPage extends React.Component {
             secondsLeft: 20,
             canFinalDrawingBeSent: false,
             timeToRate: false,
+            winnerTime: false,
+            shouldTopButtonsDisable: false,
+            shouldBottomButtonsDisable: false,
+            playerOneScore: 0,
+            playerTwoScore: 0,
+            playerThreeScore: 0,
+            playerFourScore: 0,
+            playerFiveScore: 0,
         };
     }
 
@@ -162,7 +171,43 @@ class DrawingAndRatingPage extends React.Component {
 
     startDrawingAgain = () => {
         this.setState({ timeToRate: false })
+        this.setState({ shouldTopButtonsDisable: false })
+        this.setState({ shouldBottomButtonsDisable: false })
         this.newDrawing()
+    }
+
+    isGameOver = () => {
+        let isTheGameOver = false
+        if (this.state.drawingNumber === (this.props.playerNames.length * 2)) {
+            isTheGameOver = true
+        }
+
+        return isTheGameOver
+    }
+
+    finishTheGame = () => {
+        this.setState({ timeToRate: false })
+        this.setState({ winnerTime: true })
+    }
+
+    sendRating = (score, playerNumber, topOrBottom) => {
+        if (playerNumber === "playerOne") {
+            this.setState({ playerOneScore: this.state.playerOneScore + score})
+        } else if (playerNumber === "playerTwo") {
+            this.setState({ playerTwoScore: this.state.playerOneScore + score})
+        } else if (playerNumber === "playerThree") {
+            this.setState({ playerThreeScore: this.state.playerThreeScore + score})
+        } else if (playerNumber === "playerFour") {
+            this.setState({ playerFourScore: this.state.playerFourScore + score})
+        } else {
+            this.setState({ playerFiveScore: this.state.playerFiveScore + score})
+        }
+
+        if (topOrBottom === "top") {
+            this.setState({ shouldTopButtonsDisable: true })
+        } else {
+            this.setState({ shouldBottomButtonsDisable: true })
+        }
     }
 
     async componentDidMount () {
@@ -179,6 +224,10 @@ class DrawingAndRatingPage extends React.Component {
             setTimeout(() => {
                 this.startDrawingSend();
             }, 990)   
+        }
+
+        if (this.state.secondsLeft === 0) {
+            this.vibrate();
         }
     }
 
@@ -226,9 +275,9 @@ class DrawingAndRatingPage extends React.Component {
                             <div className="player-drawing-name"><h5><b>{this.getPlayerName(this.getPreviousPlayerName())}</b>'s drawing rating:</h5>
                             </div>
                             <div className="rating-buttons">
-                                <button className="low-rating" onClick={this.userIsReady}>1</button>
-                                <button className="med-rating"onClick={this.userIsReady}>2</button>
-                                <button className="high-rating" onClick={this.userIsReady}>3</button> 
+                                <button disabled={this.state.shouldTopButtonsDisable} className={this.state.shouldTopButtonsDisable === false ? "low-rating" : "disabled-button"} onClick={() => this.sendRating(1, this.getPreviousPlayerName(), "top")}>1</button>
+                                <button disabled={this.state.shouldTopButtonsDisable} className={this.state.shouldTopButtonsDisable === false ? "med-rating" : "disabled-button"} onClick={() => this.sendRating(2, this.getPreviousPlayerName(), "top")}>2</button>
+                                <button disabled={this.state.shouldTopButtonsDisable} className={this.state.shouldTopButtonsDisable === false ? "high-rating" : "disabled-button"} onClick={() => this.sendRating(3, this.getPreviousPlayerName(), "top")}>3</button> 
                             </div>
                         </div>
                         
@@ -238,17 +287,49 @@ class DrawingAndRatingPage extends React.Component {
                         <div className="name-and-button-holder">
                             <div className="player-drawing-name"><h5><b>{this.getPlayerName(getPlayerName)}</b>'s drawing rating:</h5></div>
                             <div className="rating-buttons">
-                                <button className="low-rating" onClick={this.userIsReady}>1</button>
-                                <button className="med-rating"onClick={this.userIsReady}>2</button>
-                                <button className="high-rating" onClick={this.userIsReady}>3</button> 
+                                <button disabled={this.state.shouldBottomButtonsDisable} className={this.state.shouldBottomButtonsDisable === false ? "low-rating" : "disabled-button"} onClick={() => this.sendRating(1, getPlayerName, "bottom")}>1</button>
+                                <button disabled={this.state.shouldBottomButtonsDisable} className={this.state.shouldBottomButtonsDisable === false ? "med-rating" : "disabled-button"} onClick={() => this.sendRating(2, getPlayerName, "bottom")}>2</button>
+                                <button disabled={this.state.shouldBottomButtonsDisable} className={this.state.shouldBottomButtonsDisable === false ? "high-rating" : "disabled-button"} onClick={() => this.sendRating(3, getPlayerName, "bottom")}>3</button> 
                             </div>
                         </div>
-                        <button id="rating-time-over" onClick={this.startDrawingAgain}>Start drawing again!</button>
+                        {this.isGameOver() === false &&
+                        <div>
+                            <h5>Pass to <b>{this.getPlayerName(nextPlayer)}</b>, it's their turn next!</h5>
+                            <button className={this.state.shouldBottomButtonsDisable === true && this.state.shouldTopButtonsDisable === true ? "normal-button" : "disabled-button"} id="rating-time-over" onClick={this.startDrawingAgain}>Start drawing again!</button>
+                        </div>
+                        }
+                        {this.isGameOver() === true &&
+                        <button id="rating-time-over" onClick={this.finishTheGame}>Click to see the final results!</button>
+                        }
                     </div>
                 </div>
             )
+        } else if (this.state.winnerTime === true) {
+            return (
+                <div className="inner-content">
+                    <h3>And the scores are...</h3>
+                    {this.props.playerNames.length >= 3 &&
+                    <div>
+                        <h4>{this.props.playerNames[0]}: {this.state.playerOneScore} points</h4>
+                        <h4>{this.props.playerNames[1]}: {this.state.playerTwoScore} points</h4>
+                        <h4>{this.props.playerNames[2]}: {this.state.playerThreeScore} points</h4>
+                    </div>
+                    }
+                    {this.props.playerNames.length >= 4 &&
+                    <div>
+                        <h4>{this.props.playerNames[3]}: {this.state.playerFourScore} points</h4>
+                    </div>
+                    }
+                    {this.props.playerNames.length >= 5 &&
+                    <div>
+                        <h4>{this.props.playerNames[4]}: {this.state.playerFiveScore} points</h4>
+                    </div>
+                    }
+                    <img src={Celebrate} className="big-image" alt="celebration-fireworks"/>
+                    <button id="rating-time-over" onClick={() => window.location.reload()}>Play again?</button>
+                </div>
+            )
         } else {
-            this.vibrate();
             return (
                 <div className="content-inner">
                     <img src={Clock} className="big-image" alt="times-up-alarm-clock"/>
