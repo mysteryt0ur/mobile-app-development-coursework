@@ -188,7 +188,7 @@ class InitialDrawings extends React.Component {
                         </div>
                         <h5 className="sub-header">Choose a colour below (this will be yours for the whole game) and draw your squiggle. Once done, click the button below to submit. Each player will draw two squiggles.</h5>
                     </div>
-                    <div>
+                    <div id="drawing-colours">
                         {this.state.hasRedBeenUsed === false &&
                         <span className="dot" id= {"red-dot"} onClick={() => this.canColourBeUsed("red")}></span>}
 

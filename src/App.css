@@ -9,6 +9,7 @@
   --dark-green-colour: rgb(0, 107, 21);
   --purple-drawing-colour: #4900DF;
   --orange-drawing-colour: #DF6300;
+  --dark-orange-colour: rgb(136, 61, 0);
   --grey-colour: rgb(194, 194, 194);
   --dark-grey-colour: rgb(110, 110, 110);
 }
@@ -47,7 +48,7 @@ input[type="submit"] {
   text-shadow: 0px -2px green;
 }
 
-b {
+b, i {
   margin: 0px !important;
 }
 
@@ -161,19 +162,73 @@ html, body {
 #canvas, #canvas-rate {
   border: 0.4em var(--med-green-colour);
   border-style: dashed;
-  margin: auto;
 }
 
 #canvas {
   width: 280px;
+  margin: auto;
 }
 
 #canvas-rate {
-  width: 220px;
+  width: 200px;
 }
 
 #canvas-rate div {
   margin: 0px;
+}
+
+#rating-time div {
+ margin: auto;
+}
+
+.name-and-button-holder {
+  display: flex;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  margin-bottom: 0.5em !important;
+  margin-top: 0.5em !important;
+  width: 90% !important;
+}
+
+.player-drawing-name {
+  width: 150px !important;
+  margin-top: 0px !important;
+}
+
+.player-drawing-name h5 {
+  margin-top: 0px;
+}
+
+#drawing-and-button-holder {
+  width: 90% !important;
+  margin: auto;
+}
+
+.rating-buttons {
+  width: 150px !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.rating-buttons button {
+  width: 40px;
+  margin-right: 0px !important;
+  padding: 5px 5px 0px;
+}
+
+.low-rating {
+  background-color: var(--red-drawing-colour);
+  border-bottom: 5px solid var(--dark-red-colour);
+}
+
+.med-rating {
+  background-color: var(--orange-drawing-colour);
+  border-bottom: 5px solid var(--dark-orange-colour);
+}
+
+.low-rating {
+  background-color: var(--med-green-colour);
+  border-bottom: 5px solid var(--dark-green-colour);
 }
 
 .dot {
@@ -210,6 +265,10 @@ html, body {
   margin: 0px;
 }
 
+#rating-time-over {
+  width: 60%;
+}
+
 .big-image {
   height: 50vmin;
 }
@@ -241,29 +300,45 @@ html, body {
   width: 75%;
 }
 
+#initial-drawing-main-text-holder {
+  height: 14vh;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo, .big-image, .small-image  {
     animation: App-logo-spin infinite 3s linear;
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 4000px) {
   button, input[type="submit"] {
     width: 45%;
     margin-bottom: 0px !important;
   }
 
+  h5 {
+    font-size: 0.75em;
+  }
+
+  .player-drawing-name {
+    width: 170px !important;
+  }
+
   #player1, #player2, #player3, #player4, #player5, #player6, #player7, #player8 {
     width: 80%;
     margin-bottom: 0px;
     margin-top: 0.5em;
   }
+
+  #rating-time-over {
+    padding: 12px !important;
+  }
 }
 
 @media only screen and (max-width: 320px) {
   button, input[type="submit"] {
-    width: 50%;
-    font-size: 1em;
+    width: 40%;
+    font-size: 0.8em;
     margin-bottom: 0px !important;
   }
 
@@ -272,10 +347,33 @@ html, body {
     margin-bottom: 0px;
     margin-top: 0.5em;
   }
-}
 
-#initial-drawing-main-text-holder {
-  height: 14vh;
+  .main-text-holder {
+    margin-bottom: 0px;
+    height: 17vh;
+  }
+
+  .dot {
+    height: 30px;
+    width: 30px;
+    margin-bottom: 0px;
+  }
+
+  h3 {
+    font-size: 1em;
+  }
+
+  h5 {
+    font-size: 0.65em;
+  }
+
+  #initial-drawing-main-text-holder {
+    margin-bottom: 0px;
+  }
+
+  #drawing-colours {
+    margin-top: 0px;
+  }
 }
 
 @keyframes shake {

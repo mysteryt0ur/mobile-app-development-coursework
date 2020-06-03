@@ -68,6 +68,7 @@ class Drawing extends React.Component {
         let drawingDetails
         let squiggleNumber
         let drawingLocation
+        let fullRef
         let nextDoodle = this.props.currentDoodler
         let currentPlayers = this.props.playerNames
         
@@ -78,7 +79,10 @@ class Drawing extends React.Component {
                 squiggleNumber= "squiggleTwo"
             }
 
-            drawingLocation = Firebase.database().ref('playersAndDrawings/' + this.props.playerId + '/' + nextDoodle + '/' + squiggleNumber)
+            fullRef = 'playersAndDrawings/' + this.props.playerId + '/' + nextDoodle + '/' + squiggleNumber
+            console.log(fullRef)
+            drawingLocation = Firebase.database().ref(fullRef)
+
         } else if (this.props.ratingTime === true) {
             if (this.props.drawingNumber <= currentPlayers.length) {
                 squiggleNumber = "drawingOne"
@@ -86,7 +90,10 @@ class Drawing extends React.Component {
                 squiggleNumber= "drawingTwo"
             }
 
-            drawingLocation = Firebase.database().ref('playersAndDrawings/' + this.props.playerId + '/' + ratingTimePlayer + '/' + squiggleNumber)
+            fullRef = 'playersAndDrawings/' + this.props.playerId + '/' + ratingTimePlayer + '/' + squiggleNumber
+            drawingLocation = Firebase.database().ref(fullRef)
+            console.log(fullRef)
+
         }
 
             drawingLocation.on("value", snapshot => {
@@ -152,8 +159,8 @@ class Drawing extends React.Component {
                     {this.props.drawingTime === true && this.props.ratingTime === true &&
                     <div id="canvas-rate">
                         <CanvasDraw loadTimeOffset={5} disabled hideGrid ref={canvasDraw => (this.loadableCanvas = canvasDraw)} 
-                        canvasWidth={this.state.drawingWidth - 60}
-                        canvasHeight={this.state.drawingHeight - 60}
+                        canvasWidth={this.state.drawingWidth - 80}
+                        canvasHeight={this.state.drawingHeight - 80}
                         brushColor={this.props.currentDrawColour}
                         brushRadius={this.state.brushSize}
                         saveData={this.getDrawingData(this.props.currentPlayer)}/>

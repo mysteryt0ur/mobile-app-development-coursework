@@ -24,13 +24,18 @@ class DrawingAndRatingPage extends React.Component {
         let numOfPlayers = namesOfPlayers.length
         let whoIsPlaying
         if (drawingNumber <= numOfPlayers) {
+            if (possiblePlayers[drawingNumber - 1] < 0) {
+                whoIsPlaying = possiblePlayers[numOfPlayers - 1]
+            } else {
             whoIsPlaying = possiblePlayers[drawingNumber - 1]
-        } else {
+            }
+        } else if (possiblePlayers[drawingNumber - 1] < 0) {
+            whoIsPlaying = possiblePlayers[numOfPlayers - 1] 
+            } else {
             whoIsPlaying = possiblePlayers[drawingNumber - numOfPlayers - 1]
         } 
 
         return whoIsPlaying
-        
     }
 
     getPlayerName = (currentPlayer) => {
@@ -155,6 +160,11 @@ class DrawingAndRatingPage extends React.Component {
         this.setState({ timeToRate: true })
     }
 
+    startDrawingAgain = () => {
+        this.setState({ timeToRate: false })
+        this.newDrawing()
+    }
+
     async componentDidMount () {
         const url = "https://random-word-api.herokuapp.com/word?number=5"
         const response = await fetch(url);
@@ -207,12 +217,33 @@ class DrawingAndRatingPage extends React.Component {
         } else if (this.state.timeToRate === true) {
             return (
                 <div className="inner-content">
-                    <div className="header-and-button-holder">
-                        <h3 className="header-text">It's time to rate!<span className="bold-name-text">{this.getPlayerName(getPlayerName)}!</span></h3>
-
-                        <Drawing currentDrawColour={drawingColour} drawingNumber={this.state.drawingNumber} drawingTime={true} ratingTime={true} currentDoodler={this.workOutNextPlayer()} currentPlayer={getPlayerName}  playerNames={this.returnPlayerNames()} playerId={this.returnPlayerIdProp()}/>
-
-                        <Drawing currentDrawColour={drawingColour} drawingNumber={this.state.drawingNumber} drawingTime={true} ratingTime={true} currentDoodler={this.workOutNextPlayer()} currentPlayer={this.getPreviousPlayerName()} playerNames={this.returnPlayerNames()} playerId={this.returnPlayerIdProp()}/>
+                    <div className="header-and-button-holder" id="rating-time">
+                        <h3 className="header-text">It's time for the other players to rate! The word was: <i>{randomWord}</i></h3>
+                        <div className="drawing-and-button-holder">
+                            <Drawing currentDrawColour={drawingColour} drawingNumber={this.state.drawingNumber - 1} drawingTime={true} ratingTime={true} currentDoodler={this.workOutNextPlayer()} currentPlayer={this.getPreviousPlayerName()}  playerNames={this.returnPlayerNames()} playerId={this.returnPlayerIdProp()}/>
+                        </div>
+                        <div className="name-and-button-holder">
+                            <div className="player-drawing-name"><h5><b>{this.getPlayerName(this.getPreviousPlayerName())}</b>'s drawing rating:</h5>
+                            </div>
+                            <div className="rating-buttons">
+                                <button className="low-rating" onClick={this.userIsReady}>1</button>
+                                <button className="med-rating"onClick={this.userIsReady}>2</button>
+                                <button className="high-rating" onClick={this.userIsReady}>3</button> 
+                            </div>
+                        </div>
+                        
+                        <div className="drawing-and-button-holder">
+                            <Drawing currentDrawColour={drawingColour} drawingNumber={this.state.drawingNumber} drawingTime={true} ratingTime={true} currentDoodler={this.workOutNextPlayer()} currentPlayer={getPlayerName} playerNames={this.returnPlayerNames()} playerId={this.returnPlayerIdProp()}/>
+                        </div>
+                        <div className="name-and-button-holder">
+                            <div className="player-drawing-name"><h5><b>{this.getPlayerName(getPlayerName)}</b>'s drawing rating:</h5></div>
+                            <div className="rating-buttons">
+                                <button className="low-rating" onClick={this.userIsReady}>1</button>
+                                <button className="med-rating"onClick={this.userIsReady}>2</button>
+                                <button className="high-rating" onClick={this.userIsReady}>3</button> 
+                            </div>
+                        </div>
+                        <button id="rating-time-over" onClick={this.startDrawingAgain}>Start drawing again!</button>
                     </div>
                 </div>
             )
