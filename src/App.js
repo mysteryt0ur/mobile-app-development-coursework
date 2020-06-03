@@ -72,7 +72,6 @@ class App extends React.Component {
     let getData = Firebase.database().ref('playersAndDrawings/' + this.state.playerId + '/numOfSquiggles')
       getData.on("value", snapshot => {
         if (amountOfPlayers === 3 && snapshot.val() === 7) {
-          console.log("3 players has been met")
           answer = true
         } else if (amountOfPlayers === 4 && snapshot.val() === 9) {
           answer = true
@@ -91,8 +90,7 @@ class App extends React.Component {
   }
 
   hidePage(name) {
-    console.log(name);
-    switch (name) {
+      switch (name) {
       case "showHomePage":
         this.setState({ showHomePage: false });
         this.setState({ showInputNames: true })

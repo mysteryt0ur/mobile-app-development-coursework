@@ -94,7 +94,6 @@ class DrawingAndRatingPage extends React.Component {
                 this.setState({ secondsLeft: this.state.secondsLeft - 1})
             }
         }, 1000)
-        console.log("i've beeen run")
     }
 
     returnRandomWord = (drawingNumber) => {
@@ -139,7 +138,6 @@ class DrawingAndRatingPage extends React.Component {
     }
 
     newDrawing = () => {
-        console.log("drawing number should be heightened")
         this.setState({ drawingNumber: this.state.drawingNumber + 1 })
         this.setState({ secondsLeft: 20 })
     }

@@ -121,7 +121,6 @@ class InitialDrawings extends React.Component {
 
     incrementDrawings = () => {
         this.setState({ drawingNumber: this.state.drawingNumber + 1 })
-        console.log(this.state.drawingNumber)
     }
 
     returnDrawingNumber = () => {
@@ -150,7 +149,6 @@ class InitialDrawings extends React.Component {
     changeButtonLabel = () => {
         let answer = false
         let allPlayers = this.props.playerNames
-        console.log(allPlayers.length)
         if (allPlayers.length === 3 && this.state.drawingNumber === 6) {
             answer = true
         } else if (allPlayers.length === 4 && this.state.drawingNumber === 8) { 
