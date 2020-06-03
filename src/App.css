@@ -155,15 +155,14 @@ html, body {
 
 .canvas-holder * {
   margin: auto;
+  width: 300px;
 }
 
 #canvas {
-  border: 0.4em green;
+  border: 0.4em var(--med-green-colour);
   border-style: dashed;
-}
-
-.canvas {
-  margin: 0 !important;
+  margin: auto;
+  width: 280px;
 }
 
 .dot {
@@ -207,6 +206,7 @@ html, body {
 .small-image {
   height: 20vmin;
   margin-top: 0.5em;
+  width: auto;
 }
 
 #drawing-info {

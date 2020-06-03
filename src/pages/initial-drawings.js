@@ -1,5 +1,6 @@
 import React from 'react';
 import Drawing from '../components/drawing';
+import Paintbrush from '../images/cartoon-paintbrush.png'
 
 class InitialDrawings extends React.Component {
     constructor(props) {
@@ -17,7 +18,8 @@ class InitialDrawings extends React.Component {
             hasGreenBeenUsed: false,
             hasPurpleBeenUsed: false,
             hasOrangeBeenUsed: false,
-            canDrawingBeSent: false
+            canDrawingBeSent: false,
+            canTransitionBeShown: false,
         };
     }
 
@@ -160,50 +162,75 @@ class InitialDrawings extends React.Component {
         return answer
     }
 
+    startTransitionScreen = () => {
+        setTimeout(() => { 
+            this.setState({ canTransitionBeShown: true })
+          }, 100);
+    }
+
+    returnPlayerIdProp = () => { 
+        return this.props.playerId
+    }
+
     render() {
         let colourToDraw = this.getColourAsProp()
         let getPlayerName = this.getPlayerOrder()
         let drawingNumber = this.returnDrawingNumber()
         let isTheDrawingBlank = this.isDrawingStillBlank()
         let canButtonBeChanged = this.changeButtonLabel()
-        return (
-            <div className="inner-content">
-                <div id="initial-drawing-main-text-holder">
-                    <div className="header-and-button-holder">
-                        <h3 className="header-text">Let's start doodling <span className="bold-name-text">{getPlayerName}!</span></h3>
+
+        if (this.state.canTransitionBeShown === false) {
+            return (
+                <div className="inner-content">
+                    <div id="initial-drawing-main-text-holder">
+                        <div className="header-and-button-holder">
+                            <h3 className="header-text">Let's start doodling <span className="bold-name-text">{getPlayerName}!</span></h3>
+                        </div>
+                        <h5 className="sub-header">Choose a colour below (this will be yours for the whole game) and draw your squiggle. Once done, click the button below to submit. Each player will draw two squiggles.</h5>
                     </div>
-                    <h5 className="sub-header">Choose a colour below (this will be yours for the whole game) and draw your squiggle. Once done, click the button below to submit. Each player will draw two squiggles.</h5>
+                    <div>
+                        {this.state.hasRedBeenUsed === false &&
+                        <span className="dot" id= {"red-dot"} onClick={() => this.canColourBeUsed("red")}></span>}
+
+                        {this.state.hasBlueBeenUsed === false &&
+                        <span className="dot" id= {"blue-dot"} onClick={() => this.canColourBeUsed("blue")}
+                        ></span>}
+
+                        {this.state.hasGreenBeenUsed === false &&
+                        <span className="dot" id= {"green-dot"} onClick={() => this.canColourBeUsed("green")}></span>}
+
+                        {this.state.hasPurpleBeenUsed === false &&
+                        <span className="dot" id= {"purple-dot"} onClick={() => this.canColourBeUsed("purple")}></span>}
+
+                        {this.state.hasOrangeBeenUsed === false &&
+                        <span className="dot" id= {"orange-dot"} onClick={() => this.canColourBeUsed("orange")}></span>}
+
+                    </div>
+                    <div className="canvas-holder">
+                        <Drawing currentDrawColour={colourToDraw} drawingNumber={drawingNumber} drawingTime={false} canDrawingBeSent={this.drawingCanBePosted(this.state.canDrawingBeSent)} playerId={this.returnPlayerIdProp()}/>
+                    </div>
+                    <div className="button-holder">
+
+                        {canButtonBeChanged === false &&
+                        <button disabled={isTheDrawingBlank} onClick={() => {this.setState({ canDrawingBeSent: true }); this.incrementDrawings(); this.resetColourUse(); this.stopDrawingPost()}}>Next Squiggle</button>}
+
+                        {canButtonBeChanged === true && <button disabled={isTheDrawingBlank} id="start-drawing-button" onClick={() => {this.setState({ canDrawingBeSent: true }); this.incrementDrawings(); this.resetColourUse(); this.stopDrawingPost(); this.startTransitionScreen();}}>Submit Squiggle and Start Drawing!</button>}
+                    </div>
                 </div>
-                <div>
-                    {this.state.hasRedBeenUsed === false &&
-                    <span className="dot" id= {"red-dot"} onClick={() => this.canColourBeUsed("red")}></span>}
-
-                    {this.state.hasBlueBeenUsed === false &&
-                    <span className="dot" id= {"blue-dot"} onClick={() => this.canColourBeUsed("blue")}
-                    ></span>}
-
-                    {this.state.hasGreenBeenUsed === false &&
-                    <span className="dot" id= {"green-dot"} onClick={() => this.canColourBeUsed("green")}></span>}
-
-                    {this.state.hasPurpleBeenUsed === false &&
-                    <span className="dot" id= {"purple-dot"} onClick={() => this.canColourBeUsed("purple")}></span>}
-
-                    {this.state.hasOrangeBeenUsed === false &&
-                    <span className="dot" id= {"orange-dot"} onClick={() => this.canColourBeUsed("orange")}></span>}
-
+            )
+        } else {
+            return (
+                <div className="inner-content">
+                    <div id="cartoon-icon">
+                        <img src={Paintbrush} className="small-image" alt="cartoon-paintbrush"/>
+                    </div>
+                    <h3>Hold on a moment...</h3>
+                    <div id="cartoon-icon">
+                        <img src={Paintbrush} className="small-image" alt="cartoon-paintbrush"/>
+                    </div>
                 </div>
-                <div className="canvas-holder">
-                    <Drawing currentDrawColour={colourToDraw} drawingNumber={drawingNumber} drawingTime={false} canDrawingBeSent={this.drawingCanBePosted(this.state.canDrawingBeSent)}/>
-                </div>
-                <div className="button-holder">
-
-                    {canButtonBeChanged === false &&
-                    <button disabled={isTheDrawingBlank} onClick={() => {this.setState({ canDrawingBeSent: true }); this.incrementDrawings(); this.resetColourUse(); this.stopDrawingPost()}}>Next Squiggle</button>}
-
-                    {canButtonBeChanged === true && <button disabled={isTheDrawingBlank} id="start-drawing-button" onClick={() => {this.setState({ canDrawingBeSent: true }); this.incrementDrawings(); this.resetColourUse(); this.stopDrawingPost()}}>Submit Squiggle and Start Drawing!</button>}
-                </div>
-            </div>
-        )
+            )
+        }
     }
 }
 

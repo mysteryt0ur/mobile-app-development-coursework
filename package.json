@@ -1,5 +1,5 @@
 {
-  "name": "pishedtionary-app",
+  "name": "squibble-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,9 +9,11 @@
     "dotenv": "^8.2.0",
     "firebase": "^7.14.3",
     "react": "^16.13.1",
+    "react-add-to-homescreen": "^1.1.0",
     "react-canvas-draw": "^1.1.0",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "typescript": "^3.9.3"
   },
   "scripts": {
     "start": "react-scripts start",

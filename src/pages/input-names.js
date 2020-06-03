@@ -42,7 +42,7 @@ class InputNames extends React.Component {
 
     writePlayerNames = (playerNo) => {
         let playerNumbers = ["playerOne", "playerTwo", "playerThree", "playerFour", "playerFive"]
-        Firebase.database().ref('playersAndDrawings/' + playerNumbers[playerNo]).set({
+        Firebase.database().ref('playersAndDrawings/' + this.props.playerId + '/' + playerNumbers[playerNo]).set({
             playerName: this.state.players[playerNo],
             squiggleOne: null,
             squiggleTwo: null, 

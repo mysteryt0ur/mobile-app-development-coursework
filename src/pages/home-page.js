@@ -2,6 +2,7 @@ import React from 'react';
 import logo from '../images/paint-palette.png'
 import logoTwo from '../images/canvas.png'
 
+
 class HomePage extends React.Component {
 
     render() {

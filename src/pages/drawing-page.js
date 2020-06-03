@@ -25,9 +25,9 @@ class DrawingAndRatingPage extends React.Component {
         let numOfPlayers = namesOfPlayers.length
         let whoIsPlaying
         if (drawingNumber <= numOfPlayers) {
-            whoIsPlaying = possiblePlayers[drawingNumber - 1]  
+            whoIsPlaying = possiblePlayers[drawingNumber - 1]
         } else {
-            whoIsPlaying = possiblePlayers[drawingNumber - numOfPlayers]
+            whoIsPlaying = possiblePlayers[drawingNumber - numOfPlayers - 1]
         } 
 
         return whoIsPlaying
@@ -36,7 +36,7 @@ class DrawingAndRatingPage extends React.Component {
 
     getPlayerName = (currentPlayer) => {
         let currentPlayerName
-        let database = Firebase.database().ref('playersAndDrawings/' + currentPlayer + '/playerName')
+        let database = Firebase.database().ref('playersAndDrawings/' + this.props.playerId + '/' + currentPlayer + '/playerName')
         database.on("value", snapshot => {
             currentPlayerName = snapshot.val()
         })
@@ -45,41 +45,28 @@ class DrawingAndRatingPage extends React.Component {
     }
 
     workOutNextPlayer = () => {
-        let lastPlayer = this.decidePlayerOrder()
-        let nextPlayer
-        if (lastPlayer === "playerOne") {
-            nextPlayer = "playerTwo"
-        } else if (lastPlayer === "playerTwo") {
-            nextPlayer = "playerThree"
-        } else if (lastPlayer === "playerThree") {
-            nextPlayer = "playerFour"
-        } else if (lastPlayer === "playerFour") {
-            nextPlayer = "playerFive"
-        } else {
-            nextPlayer = "playerOne"
-        }
-
-        return nextPlayer
-    }
-
-    decideDoodleOrder = () => {
         let namesOfPlayers = this.props.playerNames
+        let drawingNumber = this.state.drawingNumber
         let possiblePlayers = ["playerOne", "playerTwo", "playerThree","playerFour", "playerFive"]
         let numOfPlayers = namesOfPlayers.length
-        let drawingNumber = this.props.drawingNumber
         let whoIsPlaying
-        if (drawingNumber <= (numOfPlayers - 1)) {
-            whoIsPlaying = possiblePlayers[drawingNumber + 1]  
+        if (drawingNumber < numOfPlayers) {
+            whoIsPlaying = possiblePlayers[drawingNumber]
+        } else if (drawingNumber === numOfPlayers) {
+            whoIsPlaying = possiblePlayers[0]
+        } else if (drawingNumber === (numOfPlayers * 2)) {
+            whoIsPlaying = possiblePlayers[0]
         } else {
-            whoIsPlaying = possiblePlayers[drawingNumber - (numOfPlayers - 1)]
-        } 
+            whoIsPlaying = possiblePlayers[drawingNumber - numOfPlayers]
+        }
 
         return whoIsPlaying
+        
     }
 
     getPlayerColour = (playerNumber) => {
         let colourHolder = []
-        let returnedColour = Firebase.database().ref('playersAndDrawings/' + playerNumber + '/playerColour')
+        let returnedColour = Firebase.database().ref('playersAndDrawings/' + this.props.playerId + '/' + playerNumber + '/playerColour')
         returnedColour.on("value", snapshot => {
             colourHolder.push(snapshot.val()) 
         })
@@ -139,8 +126,17 @@ class DrawingAndRatingPage extends React.Component {
     }
 
     newDrawing = () => {
+        console.log("drawing number should be heightened")
         this.setState({ drawingNumber: this.state.drawingNumber + 1 })
         this.setState({ secondsLeft: 20 })
+    }
+
+    returnPlayerNames = () => {
+        return this.props.playerNames
+    }
+
+    returnPlayerIdProp = () => { 
+        return this.props.playerId
     }
 
     async componentDidMount () {
@@ -185,7 +181,7 @@ class DrawingAndRatingPage extends React.Component {
                             <h3>Your word is: <i>{randomWord}</i></h3>
                             <h3>Time left: <span id="timer-time">{this.returnSecondsLeft()}</span></h3>
                         </div>
-                        <Drawing currentDrawColour={drawingColour} drawingNumber ={this.props.drawingNumber} drawingTime={true} currentPlayer={getPlayerName} canFinalDrawingBeSent={this.drawingCanBePosted()} playerNames={this.props.playerNames}/>
+                        <Drawing currentDrawColour={drawingColour} drawingNumber={this.state.drawingNumber} drawingTime={true} currentDoodler={this.workOutNextPlayer()} currentPlayer={getPlayerName} canFinalDrawingBeSent={this.drawingCanBePosted()} playerNames={this.returnPlayerNames()} playerId={this.returnPlayerIdProp()}/>
                         <div id="cartoon-icon">
                             <img src={Paintbrush} className="small-image" alt="cartoon-paintbrush"/>
                         </div>

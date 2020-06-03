@@ -17,16 +17,36 @@ class App extends React.Component {
       showHomePage: true,
       showInputNames: false,
       showInitialDrawings: false,
-      showDrawingPage: false
+      showDrawingPage: false,
+      playerId: null
     };
     this.hidePage = this.hidePage.bind(this);
+  }
+
+  getRandomLetterOrNumber = () => {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < 1; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  getRandomId = () => {
+    let id = ''
+    for (let i = 0; i < 10; i++) {
+      id += this.getRandomLetterOrNumber()
+    }
+
+    this.setState({ playerId: id })
   }
 
   getPlayerNames = () => {
     var finalNames = []
     let possibleNumbers = ["playerOne", "playerTwo", "playerThree", "playerFour", "playerFive"]
     for (let i = 0; i < 5; i++) {
-        let getTable = Firebase.database().ref('/playersAndDrawings/' + possibleNumbers[i] + '/playerName');
+        let getTable = Firebase.database().ref('/playersAndDrawings/' + this.state.playerId + '/' + possibleNumbers[i] + '/playerName');
         getTable.on("value", snapshot => {
             if (snapshot.val() !== null) {
                 finalNames.push(snapshot.val().toString())
@@ -34,11 +54,6 @@ class App extends React.Component {
         })
     }
     return finalNames
-  }
-
-  refreshDatabase = () => {
-    let database = Firebase.database().ref('playersAndDrawings/');
-    database.remove()
   }
 
   validatePlayerNames = () => {
@@ -54,7 +69,7 @@ class App extends React.Component {
   checkDrawingsCanBeDone = () => {
     let answer = false
     let amountOfPlayers = this.getPlayerNames().length
-    let getData = Firebase.database().ref('playersAndDrawings/numOfSquiggles')
+    let getData = Firebase.database().ref('playersAndDrawings/' + this.state.playerId + '/numOfSquiggles')
       getData.on("value", snapshot => {
         if (amountOfPlayers === 3 && snapshot.val() === 7) {
           console.log("3 players has been met")
@@ -81,7 +96,6 @@ class App extends React.Component {
       case "showHomePage":
         this.setState({ showHomePage: false });
         this.setState({ showInputNames: true })
-        this.refreshDatabase();
         break;
       case "showInputNames":
         this.setState({ showInputNames: false });
@@ -100,7 +114,19 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    setInterval(() => { this.setState({ buttonName: "button-waiting"})}, 3000);
+    setInterval(() => { 
+      this.setState({ buttonName: "button-waiting"})
+    }, 3000);
+
+    setTimeout(() => {
+      setInterval(() => { 
+        this.setState({ buttonName: null })
+      }, 3000);
+    }, 1000);
+
+    if (this.state.playerId === null) {
+      this.getRandomId()
+    }
   }
 
   componentDidUpdate() {
@@ -116,9 +142,9 @@ class App extends React.Component {
     return (
       <div className="content">
         {showHomePage && <HomePage />}
-        {showInputNames && <InputNames />}
-        {showInitialDrawings && <InitialDrawings playerNames={getPlayerNames}/>}
-        {showDrawingPage && <DrawingAndRatingPage playerNames={getPlayerNames}/>}
+        {showInputNames && <InputNames playerId={this.state.playerId}/>}
+        {showInitialDrawings && <InitialDrawings playerNames={getPlayerNames} playerId={this.state.playerId}/>}
+        {showDrawingPage && <DrawingAndRatingPage playerNames={getPlayerNames} playerId={this.state.playerId}/>}
         {this.state.showHomePage === true &&
         <button className={this.state.buttonName} onClick={() => this.hidePage("showHomePage")}>Get started!</button> }
         {this.state.showInputNames === true && this.validatePlayerNames() === true &&
