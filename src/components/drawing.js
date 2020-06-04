@@ -60,7 +60,6 @@ class Drawing extends React.Component {
         let fullRef = 'playersAndDrawings/' + this.props.playerId + '/numOfSquiggles'
         var update = {};
         update[fullRef] = this.props.drawingNumber
-        console.log(this.props.drawingNumber + " is the drawing number")
         return Firebase.database().ref().update(update)
     }
 
@@ -80,7 +79,6 @@ class Drawing extends React.Component {
             }
 
             fullRef = 'playersAndDrawings/' + this.props.playerId + '/' + nextDoodle + '/' + squiggleNumber
-            console.log(fullRef)
             drawingLocation = Firebase.database().ref(fullRef)
 
         } else if (this.props.ratingTime === true) {
@@ -92,7 +90,6 @@ class Drawing extends React.Component {
 
             fullRef = 'playersAndDrawings/' + this.props.playerId + '/' + ratingTimePlayer + '/' + squiggleNumber
             drawingLocation = Firebase.database().ref(fullRef)
-            console.log(fullRef)
 
         }
 

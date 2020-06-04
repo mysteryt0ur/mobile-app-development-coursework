@@ -236,7 +236,7 @@ class DrawingAndRatingPage extends React.Component {
         let nextPlayer = this.workOutNextPlayer()
         let nextPlayerFull = this.getPlayerName(nextPlayer)
 
-        if (this.state.secondsLeft !== 0) {
+        if (this.state.secondsLeft > 0) {
             return (
                 <div className="inner-content">
                     <div className="header-and-button-holder">
@@ -259,6 +259,26 @@ class DrawingAndRatingPage extends React.Component {
                             <img src={Paintbrush} className="small-image" alt="cartoon-paintbrush"/>
                         </div>
                     </div>}
+                </div>
+            )
+        } else if (this.state.secondsLeft <= 0 && this.state.timeToRate === false) {
+            return (
+                <div className="content-inner">
+                    <img src={Clock} className="big-image" alt="times-up-alarm-clock"/>
+                    {this.isDrawingNumberEven() === false &&
+                        <div>
+                            <h3>Times up! Pass to <b><span className="bold-name-text">{nextPlayerFull}</span></b></h3>
+                            <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
+                            <button id="times-up-button" onClick={this.newDrawing}>I'm ready to draw!</button>
+                        </div>
+                    }
+                    {this.isDrawingNumberEven() === true &&
+                        <div>
+                            <h3>Times up! It's now time to rate!</h3>
+                            <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
+                            <button id="times-up-button" onClick={this.itsTimeToRate}>Rating time!</button>
+                        </div>
+                    }
                 </div>
             )
         } else if (this.state.timeToRate === true) {
@@ -325,26 +345,6 @@ class DrawingAndRatingPage extends React.Component {
                     }
                     <img src={Celebrate} className="big-image" alt="celebration-fireworks"/>
                     <button id="rating-time-over" onClick={() => window.location.reload()}>Play again?</button>
-                </div>
-            )
-        } else {
-            return (
-                <div className="content-inner">
-                    <img src={Clock} className="big-image" alt="times-up-alarm-clock"/>
-                    {this.isDrawingNumberEven() === false &&
-                        <div>
-                            <h3>Times up! Pass to <b><span className="bold-name-text">{nextPlayerFull}</span></b></h3>
-                            <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
-                            <button id="times-up-button" onClick={this.newDrawing}>I'm ready to draw!</button>
-                        </div>
-                    }
-                    {this.isDrawingNumberEven() === true &&
-                        <div>
-                            <h3>Times up! It's now time to rate!</h3>
-                            <h5 className="sub-header">Once you click the button below, your word to draw will appear and you will have 20 seconds to draw your scribble.</h5>
-                            <button id="times-up-button" onClick={this.itsTimeToRate}>Rating time!</button>
-                        </div>
-                    }
                 </div>
             )
         }
