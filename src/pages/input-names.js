@@ -8,7 +8,7 @@ class InputNames extends React.Component {
             numOfPlayers: 3,
             players: ["", "", "", "", ""]
         };
-        this.addNames = this.addNames.bind(this);
+        this.addNamesToState = this.addNamesToState.bind(this);
     }
 
     increasePlayers = () => {
@@ -23,23 +23,14 @@ class InputNames extends React.Component {
         }
     }
 
-    addNames = (event) => {
+    addNamesToState = (event) => {
         let playerSplit = this.state.players.slice()
         let boxIdSplit = event.target.id.split("player").pop()
         playerSplit[boxIdSplit - 1] = event.target.value
         this.setState({players: playerSplit});
     }
 
-    checkNames = () => {
-        let areNamesReady = true
-        for (let i = 0; i < this.state.numOfPlayers; i++) {
-            if (this.state.players[i] === "") {
-                areNamesReady = false
-                break;
-            }
-        } return areNamesReady
-    }
-
+    // write the player names to the database
     writePlayerNames = (playerNo) => {
         let playerNumbers = ["playerOne", "playerTwo", "playerThree", "playerFour", "playerFive"]
         Firebase.database().ref('playersAndDrawings/' + this.props.playerId + '/' + playerNumbers[playerNo]).set({
@@ -72,14 +63,14 @@ class InputNames extends React.Component {
                 </div>
                 <div id="text-input-holder">
                     <form onSubmit={this.handleSubmit} >
-                        <input type="text" value={this.state.players[0]} id="player1" onChange={this.addNames} />
-                        <input type="text" value={this.state.players[1]} id="player2" onChange={this.addNames} />
-                        <input type="text" value={this.state.players[2]} id="player3" onChange={this.addNames} />
+                        <input type="text" value={this.state.players[0]} id="player1" onChange={this.addNamesToState} />
+                        <input type="text" value={this.state.players[1]} id="player2" onChange={this.addNamesToState} />
+                        <input type="text" value={this.state.players[2]} id="player3" onChange={this.addNamesToState} />
                         {this.state.numOfPlayers >= 4 &&
-                            <input type="text" value={this.state.players[3]} id="player4" onChange={this.addNames} />
+                            <input type="text" value={this.state.players[3]} id="player4" onChange={this.addNamesToState} />
                         }
                         {this.state.numOfPlayers >= 5 &&
-                            <input type="text" value={this.state.players[4]} id="player5" onChange={this.addNames} />
+                            <input type="text" value={this.state.players[4]} id="player5" onChange={this.addNamesToState} />
                         }
                     </form>
                 </div>

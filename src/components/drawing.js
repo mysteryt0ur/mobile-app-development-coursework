@@ -40,6 +40,7 @@ class Drawing extends React.Component {
         return playerDrawingNumber
     }
 
+    // used to post players initial squiggles to the database
     postDrawingData = () => {
         let playerNumberReturned = this.getNumberOfPlayer()
         let squiggleNumberReturned = this.getNumberOfDrawing()
@@ -56,6 +57,7 @@ class Drawing extends React.Component {
         return Firebase.database().ref().update(update);
     }
 
+    // post what number of drawing this is to the database
     postDrawingNumbers = () => {
         let fullRef = 'playersAndDrawings/' + this.props.playerId + '/numOfSquiggles'
         var update = {};
@@ -100,6 +102,7 @@ class Drawing extends React.Component {
         return drawingDetails
     }
 
+    // used to post players final drawing to the database
     postFinishedDrawing = () => {
         let drawingNumber
         let currentPlayer = this.props.currentPlayer

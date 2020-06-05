@@ -61,6 +61,7 @@ class InitialDrawings extends React.Component {
         }
     }
 
+    // check that a colour has not been used by another player and change the draw colour if needed
     canColourBeUsed = (colour) => {
         let haveOtherColoursBeenUsed = this.checkOtherColourUse(colour)
         if (haveOtherColoursBeenUsed === false) {
@@ -69,6 +70,7 @@ class InitialDrawings extends React.Component {
         }
     }
 
+    // once another player starts, all colours that have not yet been chosen should now be available to choose
     resetColourUse = () => {
         if (this.state.drawingNumber === 2 || this.state.drawingNumber === 4 || this.state.drawingNumber === 6 || this.state.drawingNumber === 8 || this.state.drawingNumber === 10) {
             this.setState({ hasRedBeenChosen: false })
@@ -127,10 +129,12 @@ class InitialDrawings extends React.Component {
         return this.state.drawingNumber
     }
 
+    // return whether it is time for a drawing to be posted to the database
     drawingCanBePosted = (answer) => {
         return answer
     }
 
+    // stop drawing details from being sent to the database
     stopDrawingPost = () => {
         setTimeout(() => { this.setState({ canDrawingBeSent: false }) }, 100);
     }

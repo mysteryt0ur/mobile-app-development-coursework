@@ -27,6 +27,7 @@ class DrawingAndRatingPage extends React.Component {
         };
     }
 
+    // makes sure every player has a go and returns the player position (e.g. "playerOne") of the current player
     decidePlayerOrder = (drawingNumber) => {
         let namesOfPlayers = this.props.playerNames
         let possiblePlayers = ["playerOne", "playerTwo", "playerThree","playerFour", "playerFive"]
@@ -87,6 +88,7 @@ class DrawingAndRatingPage extends React.Component {
         return colourHolder[0]
     }
 
+    // checks whether the user is ready to start drawing and starts the timer
     userIsReady = () => {
         this.setState({ isUserReady: true })
             setInterval(() => {
@@ -119,6 +121,7 @@ class DrawingAndRatingPage extends React.Component {
         navigator.vibrate([500]);
     }
 
+    // allows the drawing to be sent to the database
     startDrawingSend = () => {
         this.setState({ canFinalDrawingBeSent: true })
     }
@@ -154,6 +157,7 @@ class DrawingAndRatingPage extends React.Component {
         return this.decidePlayerOrder(this.state.drawingNumber - 1)      
     }
 
+    // checks whether the drawing number is even as the rating page should be shown after two players have drawn
     isDrawingNumberEven = () => {
         let isTheNumberEven = true
         if (this.state.drawingNumber === 1 || this.state.drawingNumber === 3 || this.state.drawingNumber === 5 || this.state.drawingNumber === 7 || this.state.drawingNumber === 9) {
@@ -188,6 +192,7 @@ class DrawingAndRatingPage extends React.Component {
         this.setState({ winnerTime: true })
     }
 
+    // push the player rating to the state and disable the row of rating buttons appropriately
     sendRating = (score, playerNumber, topOrBottom) => {
         if (playerNumber === "playerOne") {
             this.setState({ playerOneScore: this.state.playerOneScore + score})
@@ -208,6 +213,7 @@ class DrawingAndRatingPage extends React.Component {
         }
     }
 
+    // calls an API to get 5 random words - resets certain states so the timer does not start straight away
     async componentDidMount () {
         const url = "https://random-word-api.herokuapp.com/word?number=5"
         const response = await fetch(url);
